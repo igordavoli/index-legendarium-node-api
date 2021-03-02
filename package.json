@@ -1,0 +1,22 @@
+{
+  "name": "index-legendarium-node-api",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/igordavoli/index-legendarium-node-api.git",
+  "author": "igordavoli <70411386+igordavoli@users.noreply.github.com>",
+  "license": "MIT",
+  "scripts": {
+    "dev": "ts-node-dev --transpile-only --ignore-watch node_modules src/server.ts",
+    "typeorm": "ts-node-dev ./node_modules/typeorm/cli.js"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "sqlite3": "^5.0.2",
+    "typeorm": "^0.2.31"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.11",
+    "ts-node-dev": "^1.1.6",
+    "typescript": "^4.2.2"
+  }
+}
