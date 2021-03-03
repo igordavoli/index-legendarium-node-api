@@ -1,18 +1,27 @@
-import { Request, Response } from 'express'
-import { getRepository, Like } from 'typeorm';
-import Words from '../models/Words';
+import { Request, Response } from 'express';
+import { getCustomRepository, Like } from 'typeorm';
+import { WordRepository } from '../repositories/WordRepository';
 
-export default {
+export class WordsController {
+
+  /*
+    |>QUERY WORD
+  */
+
   async query(req: Request, res: Response) {
-
     const { search } = req.query;
-    const wordsRepository = getRepository(Words);
-    const word = await wordsRepository.find({ vocable: Like(String(search)) })
+    const wordRepository = getCustomRepository(WordRepository);
+    const word = await wordRepository.find({ vocable: Like(String(search)) })
 
     res.status(200).json({ search, word });
-  },
+  }
 
-  async save(req: Request, res: Response) {
+  /*
+    |>CREATE WORD
+  */
+
+  async create(req: Request, res: Response) {
+    const wordRepository = getCustomRepository(WordRepository);
     const {
       vocable,
       language,
@@ -23,9 +32,13 @@ export default {
       see_too
     } = req.body;
 
-    const wordsRepository = getRepository(Words);
+    const hasWord = await wordRepository.findOne({ vocable })
 
-    const word = wordsRepository.create({
+    if (hasWord) {
+      return res.status(400).json({ Error: 'Word already exists!' })
+    }
+
+    const word = wordRepository.create({
       vocable,
       language,
       type,
@@ -33,15 +46,18 @@ export default {
       about,
       pages,
       see_too
-    }
-    );
+    });
 
-    await wordsRepository.save(word);
+    await wordRepository.save(word);
 
     res.status(201).json(word);
-  },
+  }
 
-  async edit(req: Request, res: Response) {
+  /*
+    |>EDIT WORD
+  */
+
+  async update(req: Request, res: Response) {
     const {
       id,
       vocable,
@@ -52,17 +68,12 @@ export default {
       pages,
       see_too,
     } = req.body;
-    const wordsRepository = getRepository(Words);
 
-    const word = await wordsRepository.findOne({ id: id })
+    const wordRepository = getCustomRepository(WordRepository);
 
-    if (!word) {
-      return res.status(404).json({
-        Error: 'Word not founded!'
-      })
-    }
+    const word = await wordRepository.findOne({ id: id })
 
-    await wordsRepository.update({ id: word.id }, {
+    await wordRepository.update({ id: word?.id }, {
       vocable: vocable,
       language: language,
       type: type,
@@ -72,7 +83,7 @@ export default {
       see_too: see_too,
     })
 
-    const updatedWord = await wordsRepository.findOne({ id: word.id })
+    const updatedWord = await wordRepository.findOne({ id: word?.id })
 
     res.status(200).json(updatedWord)
   }

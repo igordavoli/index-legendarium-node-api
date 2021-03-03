@@ -1,7 +1,7 @@
 import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn } from 'typeorm';
 
 @Entity('words')
-export default class Words {
+class Word {
   @PrimaryGeneratedColumn()
   readonly id: number;
 
@@ -30,3 +30,5 @@ export default class Words {
   created_at: Date;
 
 }
+
+export { Word };
