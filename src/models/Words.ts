@@ -3,7 +3,7 @@ import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn } from 'typeor
 @Entity('words')
 export default class Words {
   @PrimaryGeneratedColumn()
-  id: number;
+  readonly id: number;
 
   @Column()
   vocable: string;
