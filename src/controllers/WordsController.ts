@@ -17,7 +17,7 @@ export class WordsController {
   }
 
   /*
-    |>CREATE WORD
+    |>ADD WORD
   */
 
   async create(req: Request, res: Response) {
@@ -32,7 +32,7 @@ export class WordsController {
       see_too
     } = req.body;
 
-    const hasWord = await wordRepository.findOne({ vocable })
+    const hasWord = await wordRepository.findOne({ vocable: Like(String(vocable)) })
 
     if (hasWord) {
       return res.status(400).json({ Error: 'Word already exists!' })
@@ -85,6 +85,6 @@ export class WordsController {
 
     const updatedWord = await wordRepository.findOne({ id: word?.id })
 
-    res.status(200).json(updatedWord)
+    res.status(201).json(updatedWord)
   }
 }
