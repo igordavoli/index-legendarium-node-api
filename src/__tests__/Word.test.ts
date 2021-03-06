@@ -9,6 +9,30 @@ describe('Word', () => {
   });
 
   /*
+   |> SEARCH TEST
+ */
+
+  it('Should be able to search a word',
+    async () => {
+      const res = await request(app).get('/words').send('amigo')
+
+      expect(res.status).toBe(200);
+    });
+
+  it('Should be not able to do a empty search',
+    async () => {
+      const res = await request(app).get('/words').send('')
+
+      expect(res.status).toBe(400);
+    });
+  it('Should be able to returns a error message when search a word that not exists.',
+    async () => {
+      const res = await request(app).get('/words').send('amadeus')
+
+      expect(res.status).toBe(400);
+    });
+
+  /*
     |> ADD TEST
   */
 

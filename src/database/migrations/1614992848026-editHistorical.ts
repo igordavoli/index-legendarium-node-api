@@ -1,22 +1,27 @@
-import { MigrationInterface, QueryRunner, Table } from 'typeorm';
+import { MigrationInterface, QueryRunner, Table } from "typeorm";
 
-export class words1614641147999 implements MigrationInterface {
+export class editHistorical1614992848026 implements MigrationInterface {
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(new Table({
-      name: 'words',
+      name: 'edit_historical',
       columns: [
         {
           name: 'id',
-          type: 'integer',
-          unsigned: true,
-          isPrimary: true,
-          isGenerated: true,
-          generationStrategy: 'increment'
+          type: 'uuid',
+          isPrimary: true
+        },
+        {
+          name: 'userName',
+          type: 'varchar'
+        },
+        {
+          name: 'word_id',
+          type: 'number'
         },
         {
           name: 'vocable',
-          type: 'varchar'
+          type: 'varchar',
         },
         {
           name: 'language',
@@ -43,23 +48,36 @@ export class words1614641147999 implements MigrationInterface {
           type: 'text',
           isNullable: true
         },
-
         {
           name: 'see_too',
           type: 'text',
           isNullable: true
         },
         {
-          name: "created_at",
+          name: 'created_at',
           type: 'timestamp',
-          default: "now()"
+          default: 'now()'
+        }
+      ],
+      foreignKeys: [
+        {
+          name: 'FKUser',
+          referencedTableName: 'users',
+          referencedColumnNames: ['user_name'],
+          columnNames: ['userName']
+        },
+        {
+          name: 'FKWords',
+          referencedTableName: 'words',
+          referencedColumnNames: ['id'],
+          columnNames: ['word_id'],
         }
       ]
     }));
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable('words');
+    await queryRunner.dropTable('edit_historical');
   }
 
 }

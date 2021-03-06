@@ -27,7 +27,7 @@ class Word {
   see_too: string;
 
   @CreateDateColumn()
-  created_at: Date;
+  readonly created_at: Date;
 
 }
 

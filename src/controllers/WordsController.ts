@@ -1,6 +1,12 @@
 import { Request, Response } from 'express';
 import { getCustomRepository, Like } from 'typeorm';
 import { WordRepository } from '../repositories/WordRepository';
+import { UserRepository } from '../repositories/UserRepository';
+// import EditHistoricalController from './EditHistoricalController';
+// import EditHistoricalMetadataController from './EditHistoricalMetadataController';
+
+import saveHistorical from './EditHistoricalController';
+
 
 export class WordsController {
 
@@ -10,10 +16,19 @@ export class WordsController {
 
   async query(req: Request, res: Response) {
     const { search } = req.query;
+
+    if (search === '' || search === null) {
+      return res.status(400).json({ message: 'Empty search nothing was found.' })
+    }
+
     const wordRepository = getCustomRepository(WordRepository);
     const word = await wordRepository.find({ vocable: Like(String(search)) })
 
-    res.status(200).json({ search, word });
+    if (word.length === 0) {
+      return res.status(400).json({ message: 'Word not found!' })
+    }
+
+    res.status(200).json(word);
   }
 
   /*
@@ -22,6 +37,7 @@ export class WordsController {
 
   async create(req: Request, res: Response) {
     const wordRepository = getCustomRepository(WordRepository);
+
     const {
       vocable,
       language,
@@ -35,7 +51,7 @@ export class WordsController {
     const hasWord = await wordRepository.findOne({ vocable: Like(String(vocable)) })
 
     if (hasWord) {
-      return res.status(400).json({ Error: 'Word already exists!' })
+      return res.status(400).json({ message: 'Word already exists!' })
     }
 
     const word = wordRepository.create({
@@ -58,7 +74,11 @@ export class WordsController {
   */
 
   async update(req: Request, res: Response) {
+    const wordRepository = getCustomRepository(WordRepository);
+    const userRepository = getCustomRepository(UserRepository);
+
     const {
+      user_name,
       id,
       vocable,
       language,
@@ -69,11 +89,30 @@ export class WordsController {
       see_too,
     } = req.body;
 
-    const wordRepository = getCustomRepository(WordRepository);
+    const word = await wordRepository.findOne(id);
+    if (!word) {
+      return res.status(400).json({ message: 'Word not exists!' })
+    }
 
-    const word = await wordRepository.findOne({ id: id })
+    const user = await userRepository.findOne(user_name);
 
-    await wordRepository.update({ id: word?.id }, {
+    if (!user) {
+      return res.status(400).json({ message: 'User not exists!' })
+    }
+
+    await saveHistorical(
+      user_name,
+      id,
+      vocable,
+      language,
+      type,
+      meaning,
+      about,
+      pages,
+      see_too
+    );
+
+    await wordRepository.update({ id: word.id }, {
       vocable: vocable,
       language: language,
       type: type,
@@ -83,7 +122,7 @@ export class WordsController {
       see_too: see_too,
     })
 
-    const updatedWord = await wordRepository.findOne({ id: word?.id })
+    const updatedWord = await wordRepository.findOne({ id: word.id })
 
     res.status(201).json(updatedWord)
   }
