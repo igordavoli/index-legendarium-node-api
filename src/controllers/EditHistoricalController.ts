@@ -3,7 +3,7 @@ import { EditHistoricalRepository } from '../repositories/EditHistoricalReposito
 
 //class EditHistoricalController {
 async function saveHistorical(
-  user_name: String,
+  user_id: String,
   word_id: Number,
   vocable: String,
   language: String,
@@ -17,7 +17,7 @@ async function saveHistorical(
   const editHistoricalRepository = getCustomRepository(EditHistoricalRepository);
 
   const historical = editHistoricalRepository.create({
-    userName: user_name,
+    user_id,
     word_id,
     vocable,
     language,

@@ -12,7 +12,7 @@ export class editHistorical1614992848026 implements MigrationInterface {
           isPrimary: true
         },
         {
-          name: 'userName',
+          name: 'user_id',
           type: 'varchar'
         },
         {
@@ -59,12 +59,13 @@ export class editHistorical1614992848026 implements MigrationInterface {
           default: 'now()'
         }
       ],
+
       foreignKeys: [
         {
           name: 'FKUser',
           referencedTableName: 'users',
-          referencedColumnNames: ['user_name'],
-          columnNames: ['userName']
+          referencedColumnNames: ['id'],
+          columnNames: ['user_id']
         },
         {
           name: 'FKWords',

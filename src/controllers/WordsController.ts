@@ -78,7 +78,7 @@ export class WordsController {
     const userRepository = getCustomRepository(UserRepository);
 
     const {
-      user_name,
+      user_id,
       id,
       vocable,
       language,
@@ -94,22 +94,22 @@ export class WordsController {
       return res.status(400).json({ message: 'Word not exists!' })
     }
 
-    const user = await userRepository.findOne(user_name);
+    const user = await userRepository.findOne({ id: user_id });
 
     if (!user) {
       return res.status(400).json({ message: 'User not exists!' })
     }
 
     await saveHistorical(
-      user_name,
-      id,
-      vocable,
-      language,
-      type,
-      meaning,
-      about,
-      pages,
-      see_too
+      user_id,
+      word.id,
+      word.vocable,
+      word.language,
+      word.type,
+      word.meaning,
+      word.about,
+      word.pages,
+      word.see_too
     );
 
     await wordRepository.update({ id: word.id }, {

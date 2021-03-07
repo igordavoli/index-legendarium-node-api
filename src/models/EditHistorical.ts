@@ -1,5 +1,7 @@
-import { Column, CreateDateColumn, Entity, PrimaryColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryColumn } from "typeorm";
 import { v4 as uuid } from 'uuid';
+import { User } from "./User";
+import { Word } from "./Word";
 
 @Entity('edit_historical')
 class EditHistorical {
@@ -7,8 +9,16 @@ class EditHistorical {
   @PrimaryColumn()
   readonly id: string;
 
+  @ManyToOne(() => User)
+  @JoinColumn({ name: 'user_id' })
+  user: User;
+
   @Column()
-  userName: string;
+  user_id: string;
+
+  @ManyToOne(() => Word)
+  @JoinColumn({ name: 'word_id' })
+  word: Word;
 
   @Column()
   word_id: number;
