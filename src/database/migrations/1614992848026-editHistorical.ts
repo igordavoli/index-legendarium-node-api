@@ -13,7 +13,7 @@ export class editHistorical1614992848026 implements MigrationInterface {
         },
         {
           name: 'user_id',
-          type: 'varchar'
+          type: 'uuid'
         },
         {
           name: 'word_id',
@@ -65,13 +65,17 @@ export class editHistorical1614992848026 implements MigrationInterface {
           name: 'FKUser',
           referencedTableName: 'users',
           referencedColumnNames: ['id'],
-          columnNames: ['user_id']
+          columnNames: ['user_id'],
+          onDelete: 'SET NULL',
+          onUpdate: 'CASCADE'
         },
         {
           name: 'FKWords',
           referencedTableName: 'words',
           referencedColumnNames: ['id'],
           columnNames: ['word_id'],
+          onDelete: 'CASCADE',
+          onUpdate: 'CASCADE'
         }
       ]
     }));

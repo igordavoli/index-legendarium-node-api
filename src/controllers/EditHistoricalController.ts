@@ -3,15 +3,15 @@ import { EditHistoricalRepository } from '../repositories/EditHistoricalReposito
 
 //class EditHistoricalController {
 async function saveHistorical(
-  user_id: String,
-  word_id: Number,
-  vocable: String,
-  language: String,
-  type: String,
-  meaning: String,
-  about: String,
-  pages: String,
-  see_too: String,
+  user_id: string,
+  word_id: number,
+  vocable: string,
+  language: string,
+  type: string,
+  meaning: string,
+  about: string,
+  pages: string,
+  see_too: string,
 ) {
 
   const editHistoricalRepository = getCustomRepository(EditHistoricalRepository);

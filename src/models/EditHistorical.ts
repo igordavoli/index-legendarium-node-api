@@ -9,40 +9,40 @@ class EditHistorical {
   @PrimaryColumn()
   readonly id: string;
 
+  @Column()
+  user_id: string;
+
   @ManyToOne(() => User)
   @JoinColumn({ name: 'user_id' })
   user: User;
 
   @Column()
-  user_id: string;
+  word_id: number;
 
   @ManyToOne(() => Word)
   @JoinColumn({ name: 'word_id' })
   word: Word;
 
   @Column()
-  word_id: number;
+  vocable: string;
 
   @Column()
-  vocable: String;
+  language: string;
 
   @Column()
-  language: String;
+  type: string;
 
   @Column()
-  type: String;
+  meaning: string;
 
   @Column()
-  meaning: String;
+  about: string;
 
   @Column()
-  about: String;
+  pages: string;
 
   @Column()
-  pages: String;
-
-  @Column()
-  see_too: String;
+  see_too: string;
 
   @CreateDateColumn()
   created_at: Date;
