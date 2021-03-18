@@ -7,9 +7,10 @@ const wordsController = new WordsController();
 const userController = new UserController();
 
 routes.get('/words', wordsController.query)
+
 routes.post('/addWord', wordsController.create);
 
-routes.get('/editWords/:id', wordsController.find)
+routes.get('/editWord/:id', wordsController.find)
 routes.post('/editWord', wordsController.update)
 
 routes.post('/addUser', userController.create)
