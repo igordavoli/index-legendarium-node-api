@@ -62,11 +62,11 @@ export class WordsController {
 
 
     if (!user) {
-      return res.status(400).json({ message: 'User not exists!' });
+      return res.status(200).json({ message: 'User not exists!' });
     }
 
     if (hasWord) {
-      return res.status(400).json({ message: 'Word already exists!' });
+      return res.status(200).json({ message: 'Word already exists!' });
     }
 
     const word = wordRepository.create({
@@ -121,13 +121,13 @@ export class WordsController {
 
     const word = await wordRepository.findOne(id);
     if (!word) {
-      return res.status(400).json({ message: 'Word not exists!' });
+      return res.status(200).json({ message: 'Word not exists!' });
     }
 
     const user = await userRepository.findOne({ id: user_id });
 
     if (!user) {
-      return res.status(400).json({ message: 'User not exists!' });
+      return res.status(200).json({ message: 'User not exists!' });
     }
 
     await saveHistorical(
