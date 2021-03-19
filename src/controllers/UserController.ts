@@ -15,7 +15,7 @@ class UserController {
     const hasEmail = await userRepository.findOne({ email });
 
     if (hasEmail) {
-      return res.status(200).json({ message: 'User already exists!' });
+      return res.status(200).json({ message: 'Email already registered!' });
     }
 
     const hasUserName = await userRepository.findOne({ user_name });
@@ -46,22 +46,26 @@ class UserController {
   async singnIn(req: Request, res: Response) {
     const { email, password } = req.body;
     const userRepository = getCustomRepository(UserRepository);
-
     const hasUser = await userRepository.findOne({ email });
 
     if (!hasUser) {
       return res.status(200).json({ message: 'User not finded!' });
     }
 
-    const hashedPassword = hasUser.password;
+    const user = {
+      id: hasUser.id,
+      email: hasUser.email,
+      user_name: hasUser.user_name,
+      created_at: hasUser.created_at,
+    }
 
-    const isPasswordCorrect = await bcrypt.compare(password, hashedPassword)
+    const isPasswordCorrect = await bcrypt.compare(password, hasUser.password)
 
     if (!isPasswordCorrect) {
       return res.status(200).json({ message: 'Wrong password!' })
     }
 
-    res.status(200).json(hasUser);
+    res.status(200).json(user);
   }
 };
 

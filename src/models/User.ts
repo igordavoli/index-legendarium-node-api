@@ -13,7 +13,9 @@ class User {
   @Column()
   user_name: string;
 
-  @Column()
+  @Column(
+    //{ select: false }
+  )
   password: string;
 
   @CreateDateColumn()
