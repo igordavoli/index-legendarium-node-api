@@ -50,15 +50,15 @@ class UserController {
     const hasUser = await userRepository.findOne({ email });
 
     if (!hasUser) {
-      return res.status(200).json({ message: 'User not fouded!' });
+      return res.status(200).json({ message: 'User not finded!' });
     }
 
     const hashedPassword = hasUser.password;
 
-    const isPasswordCorect = await bcrypt.compare(password, hashedPassword)
+    const isPasswordCorrect = await bcrypt.compare(password, hashedPassword)
 
-    if (!isPasswordCorect) {
-      res.status(200).json({ message: 'Wrong password!' })
+    if (!isPasswordCorrect) {
+      return res.status(200).json({ message: 'Wrong password!' })
     }
 
     res.status(200).json(hasUser);
