@@ -22,7 +22,6 @@ export class WordsController {
     }
 
     const StringSearch = String(search).trim();
-
     const word = await wordRepository.find({ vocable: Like(String(StringSearch)) })
 
     if (word.length === 0) {
@@ -90,18 +89,11 @@ export class WordsController {
 
   async find(req: Request, res: Response) {
     const { id } = req.params;
-
-    console.log(id)
-
     const wordRepository = getCustomRepository(WordRepository);
-
     const word = await wordRepository.findOne({ id: Number(id) });
 
     res.status(200).json(word);
-
   }
-
-
 
   async update(req: Request, res: Response) {
     const wordRepository = getCustomRepository(WordRepository);

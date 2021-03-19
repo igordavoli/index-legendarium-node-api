@@ -13,6 +13,7 @@ routes.post('/addWord', wordsController.create);
 routes.get('/editWord/:id', wordsController.find)
 routes.post('/editWord', wordsController.update)
 
-routes.post('/addUser', userController.create)
+routes.post('/singnUp', userController.singnUp);
+routes.post('/singnIn', userController.singnIn);
 
 export { routes };
