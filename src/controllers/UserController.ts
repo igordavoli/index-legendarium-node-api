@@ -35,17 +35,25 @@ class UserController {
 
     const savedUser = await userRepository.findOne({ email });
 
-    res.status(201).json(savedUser);
+    const user = {
+      id: savedUser?.id,
+      email: savedUser?.email,
+      user_name: savedUser?.user_name,
+      created_at: savedUser?.created_at,
+    };
+
+    res.status(201).json(user);
   }
 
   /*
     |> SINGN IN
   */
 
-
   async singnIn(req: Request, res: Response) {
     const { email, password } = req.body;
     const userRepository = getCustomRepository(UserRepository);
+
+
     const hasUser = await userRepository.findOne({ email });
 
     if (!hasUser) {
@@ -57,12 +65,12 @@ class UserController {
       email: hasUser.email,
       user_name: hasUser.user_name,
       created_at: hasUser.created_at,
-    }
+    };
 
-    const isPasswordCorrect = await bcrypt.compare(password, hasUser.password)
+    const isPasswordCorrect = await bcrypt.compare(password, hasUser.password);
 
     if (!isPasswordCorrect) {
-      return res.status(200).json({ message: 'Wrong password!' })
+      return res.status(200).json({ message: 'Wrong password!' });
     }
 
     res.status(200).json(user);

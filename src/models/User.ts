@@ -14,7 +14,7 @@ class User {
   user_name: string;
 
   @Column(
-    //{ select: false }
+    // { select: false }
   )
   password: string;
 

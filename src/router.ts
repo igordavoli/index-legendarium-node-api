@@ -7,6 +7,7 @@ const wordsController = new WordsController();
 const userController = new UserController();
 
 routes.get('/words', wordsController.query)
+routes.get('/word/:id', wordsController.find)
 
 routes.post('/addWord', wordsController.create);
 

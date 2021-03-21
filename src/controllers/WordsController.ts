@@ -18,7 +18,7 @@ export class WordsController {
     if (!search) {
       console.log('busca vazia')
 
-      return res.status(400).json({ message: 'Empty search nothing was found.' })
+      return res.status(200).json({ message: 'Empty search nothing was found.' })
     }
 
     const StringSearch = String(search).trim();
@@ -26,7 +26,11 @@ export class WordsController {
 
     if (word.length === 0) {
       console.log('não encontrada')
-      return res.status(400).json({ message: 'Word not found!' })
+      return res.status(200).json({
+        message: 'Word not finded!',
+        searchedWord: search
+
+      })
     }
 
     res.status(200).json(word);
@@ -56,13 +60,14 @@ export class WordsController {
     }
 
     const stringVocable = String(vocable).trim();
-    const user = userRepository.findOne({ id: user_id });
-    const hasWord = await wordRepository.findOne({ vocable: Like(String(stringVocable)) });
 
+    const hasUser = await userRepository.findOne({ id: user_id });
 
-    if (!user) {
+    if (!hasUser) {
       return res.status(200).json({ message: 'User not exists!' });
     }
+
+    const hasWord = await wordRepository.findOne({ vocable: Like(stringVocable) });
 
     if (hasWord) {
       return res.status(200).json({ message: 'Word already exists!' });
@@ -90,7 +95,7 @@ export class WordsController {
   async find(req: Request, res: Response) {
     const { id } = req.params;
     const wordRepository = getCustomRepository(WordRepository);
-    const word = await wordRepository.findOne({ id: Number(id) });
+    const word = await wordRepository.findOne(Number(id));
 
     res.status(200).json(word);
   }
@@ -116,9 +121,9 @@ export class WordsController {
       return res.status(200).json({ message: 'Word not exists!' });
     }
 
-    const user = await userRepository.findOne({ id: user_id });
+    const hasUser = await userRepository.findOne({ id: user_id });
 
-    if (!user) {
+    if (!hasUser) {
       return res.status(200).json({ message: 'User not exists!' });
     }
 
