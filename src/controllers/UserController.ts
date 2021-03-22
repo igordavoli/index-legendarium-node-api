@@ -2,6 +2,8 @@ import { Request, Response } from 'express';
 import { getCustomRepository } from 'typeorm';
 import { UserRepository } from '../repositories/UserRepository';
 import bcrypt from 'bcryptjs';
+import { TokenGenerate } from '../utils/JWT'
+
 
 class UserController {
   /* 
@@ -33,7 +35,7 @@ class UserController {
 
     await userRepository.save(newUser);
 
-    const savedUser = await userRepository.findOne({ email });
+    const savedUser = await userRepository.findOneOrFail({ email });
 
     const user = {
       id: savedUser?.id,
@@ -42,7 +44,9 @@ class UserController {
       created_at: savedUser?.created_at,
     };
 
-    res.status(201).json(user);
+    const token = TokenGenerate(user.id)
+
+    res.status(201).json({ user, token });
   }
 
   /*
@@ -52,8 +56,6 @@ class UserController {
   async singnIn(req: Request, res: Response) {
     const { email, password } = req.body;
     const userRepository = getCustomRepository(UserRepository);
-
-
     const hasUser = await userRepository.findOne({ email });
 
     if (!hasUser) {
@@ -73,7 +75,9 @@ class UserController {
       return res.status(200).json({ message: 'Wrong password!' });
     }
 
-    res.status(200).json(user);
+    const token = TokenGenerate(user.id)
+
+    res.status(200).json({ user, token });
   }
 };
 

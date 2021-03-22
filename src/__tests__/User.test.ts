@@ -25,10 +25,12 @@ describe('User', () => {
         });
 
       expect(res.status).toBe(201);
-      expect(res.body).toHaveProperty('id');
-      expect(res.body).toHaveProperty('email', 'user@exemple.com');
-      expect(res.body).toHaveProperty('user_name', 'userExemple');
-      expect(res.body).toHaveProperty('created_at');
+      expect(res.body).toHaveProperty('token');
+      expect(res.body).toHaveProperty('user');
+      expect(res.body).toHaveProperty('user.id');
+      expect(res.body).toHaveProperty('user.email', 'user@exemple.com');
+      expect(res.body).toHaveProperty('user.user_name', 'userExemple');
+      expect(res.body).toHaveProperty('user.created_at');
     })
 
   it('Should not be able to create a new user When already exists a user with the same email and user name.',
@@ -54,10 +56,12 @@ describe('User', () => {
         });
 
       expect(res.status).toBe(201);
-      expect(res.body).toHaveProperty('id');
-      expect(res.body).toHaveProperty('email', 'user2@exemple.com');
-      expect(res.body).toHaveProperty('user_name', 'user2Exemple');
-      expect(res.body).toHaveProperty('created_at');
+      expect(res.body).toHaveProperty('token');
+      expect(res.body).toHaveProperty('user');
+      expect(res.body).toHaveProperty('user.id');
+      expect(res.body).toHaveProperty('user.email', 'user2@exemple.com');
+      expect(res.body).toHaveProperty('user.user_name', 'user2Exemple');
+      expect(res.body).toHaveProperty('user.created_at');
     })
 
   it('Should not be able to create a new user when alredy exists a user with the same user name.',
