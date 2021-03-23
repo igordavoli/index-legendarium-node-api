@@ -27,7 +27,6 @@ describe('User', () => {
       expect(res.status).toBe(201);
       expect(res.body).toHaveProperty('token');
       expect(res.body).toHaveProperty('user');
-      expect(res.body).toHaveProperty('user.id');
       expect(res.body).toHaveProperty('user.email', 'user@exemple.com');
       expect(res.body).toHaveProperty('user.user_name', 'userExemple');
       expect(res.body).toHaveProperty('user.created_at');
@@ -58,7 +57,6 @@ describe('User', () => {
       expect(res.status).toBe(201);
       expect(res.body).toHaveProperty('token');
       expect(res.body).toHaveProperty('user');
-      expect(res.body).toHaveProperty('user.id');
       expect(res.body).toHaveProperty('user.email', 'user2@exemple.com');
       expect(res.body).toHaveProperty('user.user_name', 'user2Exemple');
       expect(res.body).toHaveProperty('user.created_at');

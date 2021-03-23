@@ -4,7 +4,6 @@ import { UserRepository } from '../repositories/UserRepository';
 import bcrypt from 'bcryptjs';
 import { TokenGenerate } from '../utils/JWT'
 
-
 class UserController {
   /* 
     |> SINGNUP
@@ -38,13 +37,12 @@ class UserController {
     const savedUser = await userRepository.findOneOrFail({ email });
 
     const user = {
-      id: savedUser?.id,
       email: savedUser?.email,
       user_name: savedUser?.user_name,
       created_at: savedUser?.created_at,
     };
 
-    const token = TokenGenerate(user.id)
+    const token = TokenGenerate(savedUser.id)
 
     res.status(201).json({ user, token });
   }
@@ -56,14 +54,13 @@ class UserController {
   async singnIn(req: Request, res: Response) {
     const { email, password } = req.body;
     const userRepository = getCustomRepository(UserRepository);
-    const hasUser = await userRepository.findOne({ email });
+    const hasUser = await userRepository.findOneOrFail({ email });
 
     if (!hasUser) {
       return res.status(200).json({ message: 'User not finded!' });
     }
 
     const user = {
-      id: hasUser.id,
       email: hasUser.email,
       user_name: hasUser.user_name,
       created_at: hasUser.created_at,
@@ -75,7 +72,7 @@ class UserController {
       return res.status(200).json({ message: 'Wrong password!' });
     }
 
-    const token = TokenGenerate(user.id)
+    const token = TokenGenerate(hasUser.id)
 
     res.status(200).json({ user, token });
   }

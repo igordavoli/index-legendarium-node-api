@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 
-const Auth = (req: Request, res: Response, next: () => void) => {
+const AuthToken = (req: Request, res: Response, next: () => void) => {
   const authHeader = req.headers.authorization;
 
   if (!authHeader) {
@@ -20,7 +20,9 @@ const Auth = (req: Request, res: Response, next: () => void) => {
     return res.status(200).json({ error: 'Token error' });
   }
 
-  jwt.verify(token, String(process.env.SECRET), (err, decoded) => {
+  const secret = String(process.env.SECRET)
+
+  jwt.verify(token, secret, (err, decoded) => {
     if (err) {
       return res.status(200).json({ error: 'Invalid tolken!' })
     }
@@ -31,4 +33,4 @@ const Auth = (req: Request, res: Response, next: () => void) => {
   });
 }
 
-export { Auth };
+export { AuthToken };
