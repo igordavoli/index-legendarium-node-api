@@ -6,8 +6,8 @@ import bcrypt from 'bcryptjs';
 const AuthSingnin = async (req: Request, res: Response, next: () => void) => {
   const { email, password } = req.body;
   const userRepository = getCustomRepository(UserRepository);
-  const hasUser = await userRepository.findOneOrFail({ email });
-
+  const hasUser = await userRepository.findOne({ email });
+  console.log(hasUser)
   if (!hasUser) {
     return res.status(200).json({ message: 'User not finded!' });
   }
@@ -27,7 +27,7 @@ const AuthSingnin = async (req: Request, res: Response, next: () => void) => {
 
   req.body.user = user;
 
-  return next()
+  return next();
 }
 
 export { AuthSingnin };

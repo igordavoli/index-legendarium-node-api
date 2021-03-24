@@ -10,28 +10,31 @@ class UserController {
   */
 
   async singnUp(req: Request, res: Response) {
-    const { email, user_name, password } = req.body;
+    const { newUserAuth } = req.body;
+
     const userRepository = getCustomRepository(UserRepository);
-    const hash = await bcrypt.hash(password, 8)
-    const newUser = userRepository.create({
-      email,
-      user_name,
+
+    const hash = await bcrypt.hash(newUserAuth.password, 8)
+
+    const user = userRepository.create({
+      email: newUserAuth.email,
+      user_name: newUserAuth.user_name,
       password: hash
     });
 
-    await userRepository.save(newUser);
+    await userRepository.save(user);
 
-    const savedUser = await userRepository.findOneOrFail({ email });
+    const savedUser = await userRepository.findOneOrFail({ email: newUserAuth.email });
 
-    const user = {
-      email: savedUser?.email,
-      user_name: savedUser?.user_name,
-      created_at: savedUser?.created_at,
+    const userData = {
+      email: savedUser.email,
+      user_name: savedUser.user_name,
+      created_at: savedUser.created_at,
     };
 
     const token = TokenGenerate(savedUser.id)
 
-    res.status(201).json({ user, token });
+    res.status(201).json({ userData, token });
   }
 
   /*

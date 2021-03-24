@@ -20,11 +20,11 @@ const AuthToken = (req: Request, res: Response, next: () => void) => {
     return res.status(200).json({ error: 'Token error' });
   }
 
-  const secret = String(process.env.SECRET)
+  const secret = String(process.env.SECRET);
 
   jwt.verify(token, secret, (err, decoded) => {
     if (err) {
-      return res.status(200).json({ error: 'Invalid tolken!' })
+      return res.status(200).json({ error: 'Invalid tolken!' });
     }
 
     req.body.decoded = decoded;
