@@ -9,7 +9,7 @@ class UserController {
     |> SINGNUP
   */
 
-  async singnUp(req: Request, res: Response) {
+  async signUp(req: Request, res: Response) {
     const { newUserAuth } = req.body;
 
     const userRepository = getCustomRepository(UserRepository);
@@ -41,11 +41,11 @@ class UserController {
     |> SINGN IN
   */
 
-  async singnIn(req: Request, res: Response) {
-    const { user } = req.body;
-    const token = TokenGenerate(user.id)
+  async signIn(req: Request, res: Response) {
+    const { userData } = req.body;
+    const token = TokenGenerate(userData.id)
 
-    res.status(200).json({ user, token });
+    res.status(200).json({ userData, token });
   }
 };
 

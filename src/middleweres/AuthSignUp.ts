@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { getCustomRepository } from 'typeorm';
 import { UserRepository } from '../repositories/UserRepository';
 
-const AuthSingnUp = async (req: Request, res: Response, next: () => void) => {
+const AuthSignUp = async (req: Request, res: Response, next: () => void) => {
   const { newUser } = req.body;
 
   const newUserAuth = {
@@ -30,4 +30,4 @@ const AuthSingnUp = async (req: Request, res: Response, next: () => void) => {
   return next();
 }
 
-export { AuthSingnUp };
+export { AuthSignUp };

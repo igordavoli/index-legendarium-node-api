@@ -2,9 +2,9 @@ import { Router } from 'express';
 import { WordsController } from './controllers/WordsController';
 import { UserController } from './controllers/UserController';
 import { AuthController } from './controllers/AuthController';
-import { AuthSingnin } from './middleweres/AuthSingnin';
+import { AuthSignIn } from './middleweres/AuthSignIn';
 import { AuthToken } from './middleweres/AuthToken';
-import { AuthSingnUp } from './middleweres/AuthSingnUp';
+import { AuthSignUp } from './middleweres/AuthSignUp';
 const routes = Router();
 const wordsController = new WordsController();
 const userController = new UserController();
@@ -19,8 +19,9 @@ routes.post('/addWord', AuthToken, wordsController.create);
 routes.get('/editWord/:id', wordsController.find)
 routes.post('/editWord', AuthToken, wordsController.update)
 
-routes.post('/singnUp', AuthSingnUp, userController.singnUp);
-routes.post('/singnIn', AuthSingnin, userController.singnIn);
+routes.post('/signUp', AuthSignUp, userController.signUp);
+
+routes.post('/signIn', AuthSignIn, userController.signIn);
 
 routes.get('/auth', AuthToken, authController.ok)
 
