@@ -42,9 +42,15 @@ class UserController {
   */
 
   async signIn(req: Request, res: Response) {
-    const { userData } = req.body;
-    const token = TokenGenerate(userData.id)
+    const { hasUser } = req.body;
+    const token = TokenGenerate(hasUser.id)
 
+    const userData = {
+      email: hasUser.email,
+      user_name: hasUser.user_name,
+      created_at: hasUser.created_at,
+
+    }
     res.status(200).json({ userData, token });
   }
 };

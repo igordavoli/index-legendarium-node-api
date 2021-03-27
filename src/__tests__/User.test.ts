@@ -17,7 +17,7 @@ describe('User', () => {
 
   it('Should be able to create a new user',
     async () => {
-      const res = await request(app).post('/singnUp')
+      const res = await request(app).post('/signUp')
         .send({
           newUser: {
             email: 'user@exemple.com',
@@ -36,7 +36,7 @@ describe('User', () => {
 
   it('Should NOT be able to create a new user When already exists a user with the same email and user name.',
     async () => {
-      const res = await request(app).post('/singnUp')
+      const res = await request(app).post('/signUp')
         .send({
           newUser: {
             email: 'user@exemple.com',
@@ -51,7 +51,7 @@ describe('User', () => {
 
   it('Should be able to create a another new user with diferent email and user name.',
     async () => {
-      const res = await request(app).post('/singnUp')
+      const res = await request(app).post('/signUp')
         .send({
           newUser: {
             email: 'user2@exemple.com',
@@ -70,7 +70,7 @@ describe('User', () => {
 
   it('Should NOT be able to create a new user when alredy exists a user with the same user name.',
     async () => {
-      const res = await request(app).post('/singnUp')
+      const res = await request(app).post('/signUp')
         .send({
           newUser: {
             email: 'user3@exemple.com',
@@ -89,7 +89,7 @@ describe('User', () => {
 
   it('Should be able to login a user when inputed a existent email and a corespondent password.',
     async () => {
-      const res = await request(app).post('/singnIn')
+      const res = await request(app).post('/signIn')
         .send({
           email: 'user@exemple.com',
           password: 'user123exemple',
@@ -101,7 +101,7 @@ describe('User', () => {
 
   it('Shoud be able to NOT permit a login when inputed a inexistent email.',
     async () => {
-      const res = await request(app).post('/singnIn')
+      const res = await request(app).post('/signIn')
         .send({
           email: 'user@fail-exemple.com',
           password: 'user123exemple',
@@ -114,7 +114,7 @@ describe('User', () => {
 
   it('Shoud be able to NOT permit a login when inputed a incorrect password.',
     async () => {
-      const res = await request(app).post('/singnIn')
+      const res = await request(app).post('/signIn')
         .send({
           email: 'user@exemple.com',
           password: 'userExemple123',

@@ -43,9 +43,13 @@ export class WordsController {
   async create(req: Request, res: Response) {
     const userRepository = getCustomRepository(UserRepository);
     const wordRepository = getCustomRepository(WordRepository);
+    const { id } = req.body.decoded;
+
+    const user_id = id;
+
+    console.log(user_id)
 
     const {
-      user_id,
       vocable,
       language,
       type,
@@ -94,6 +98,7 @@ export class WordsController {
 
   async find(req: Request, res: Response) {
     const { id } = req.params;
+
     const wordRepository = getCustomRepository(WordRepository);
     const word = await wordRepository.findOne(Number(id));
 
@@ -104,49 +109,33 @@ export class WordsController {
     const wordRepository = getCustomRepository(WordRepository);
     const userRepository = getCustomRepository(UserRepository);
 
-    const {
-      user_id,
-      id,
-      vocable,
-      language,
-      type,
-      meaning,
-      about,
-      pages,
-      see_too,
-    } = req.body;
+    const user_id = req.body.decoded.id;
+    const { word } = req.body;
 
-    const word = await wordRepository.findOne(id);
-    if (!word) {
-      return res.status(200).json({ message: 'Word not exists!' });
-    }
+    const hasWord = await wordRepository.findOneOrFail({ id: word.id });
 
-    const hasUser = await userRepository.findOne({ id: user_id });
-
-    if (!hasUser) {
-      return res.status(200).json({ message: 'User not exists!' });
-    }
+    const user = await userRepository.findOneOrFail({ id: user_id });
 
     await saveHistorical(
-      user_id,
-      word.id,
-      word.vocable,
-      word.language,
-      word.type,
-      word.meaning,
-      word.about,
-      word.pages,
-      word.see_too
+      user.id,
+      hasWord.id,
+      hasWord.vocable,
+      hasWord.language,
+      hasWord.type,
+      hasWord.meaning,
+      hasWord.about,
+      hasWord.pages,
+      hasWord.see_too
     );
 
     await wordRepository.update({ id: word.id }, {
-      vocable: vocable,
-      language: language,
-      type: type,
-      meaning: meaning,
-      about: about,
-      pages: pages,
-      see_too: see_too,
+      vocable: word.vocable,
+      language: word.language,
+      type: word.type,
+      meaning: word.meaning,
+      about: word.about,
+      pages: word.pages,
+      see_too: word.see_too,
     });
 
     const updatedWord = await wordRepository.findOne({ id: word.id });

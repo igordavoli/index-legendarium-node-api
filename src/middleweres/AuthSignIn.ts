@@ -15,19 +15,13 @@ const AuthSignIn = async (req: Request, res: Response, next: () => void) => {
     return res.status(200).json({ message: 'User not finded!' });
   }
 
-  const userData = {
-    email: hasUser.email,
-    user_name: hasUser.user_name,
-    created_at: hasUser.created_at,
-  };
-
   const isPasswordCorrect = await bcrypt.compare(password, hasUser.password);
 
   if (!isPasswordCorrect) {
     return res.status(200).json({ message: 'Wrong password!' });
   }
 
-  req.body.userData = userData;
+  req.body.hasUser = hasUser;
 
   return next();
 }
