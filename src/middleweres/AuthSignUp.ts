@@ -25,7 +25,7 @@ const AuthSignUp = async (req: Request, res: Response, next: () => void) => {
     return res.status(200).json({ message: 'User name already exists!' });
   }
 
-  req.body.newUserAuth = newUserAuth;
+  req.body.validUser = newUserAuth;
 
   return next();
 }

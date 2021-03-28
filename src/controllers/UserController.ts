@@ -10,31 +10,25 @@ class UserController {
   */
 
   async signUp(req: Request, res: Response) {
-    const { newUserAuth } = req.body;
-
+    const { validUser } = req.body;
     const userRepository = getCustomRepository(UserRepository);
-
-    const hash = await bcrypt.hash(newUserAuth.password, 8)
+    const hash = await bcrypt.hash(validUser.password, 8)
 
     const user = userRepository.create({
-      email: newUserAuth.email,
-      user_name: newUserAuth.user_name,
+      email: validUser.email,
+      user_name: validUser.user_name,
       password: hash
     });
 
     await userRepository.save(user);
 
-    const savedUser = await userRepository.findOneOrFail({ email: newUserAuth.email });
-
-    const userData = {
-      email: savedUser.email,
-      user_name: savedUser.user_name,
-      created_at: savedUser.created_at,
-    };
+    const savedUser = await userRepository.findOneOrFail({ email: validUser.email });
 
     const token = TokenGenerate(savedUser.id)
 
-    res.status(201).json({ userData, token });
+    console.log(token)
+
+    res.status(201).json({ token });
   }
 
   /*
@@ -45,14 +39,14 @@ class UserController {
     const { hasUser } = req.body;
     const token = TokenGenerate(hasUser.id)
 
-    const userData = {
-      email: hasUser.email,
-      user_name: hasUser.user_name,
-      created_at: hasUser.created_at,
-
-    }
-    res.status(200).json({ userData, token });
+    res.status(200).json({ token });
   }
 };
 
 export { UserController };
+
+ // const userData = {
+    //   email: savedUser.email,
+    //   user_name: savedUser.user_name,
+    //   created_at: savedUser.created_at,
+    // };
