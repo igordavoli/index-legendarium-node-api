@@ -24,11 +24,11 @@ class UserController {
 
     const savedUser = await userRepository.findOneOrFail({ email: validUser.email });
 
+    const userNameDB = savedUser.user_name
+
     const token = TokenGenerate(savedUser.id)
 
-    console.log(token)
-
-    res.status(201).json({ token });
+    res.status(201).json({ token, userNameDB });
   }
 
   /*
@@ -38,15 +38,31 @@ class UserController {
   async signIn(req: Request, res: Response) {
     const { hasUser } = req.body;
     const token = TokenGenerate(hasUser.id)
+    const userNameDB = hasUser.user_name;
 
-    res.status(200).json({ token });
+    res.status(200).json({ token, userNameDB });
   }
+
+  /*
+    |> USERS PAGE
+  */
+
+  async userData(req: Request, res: Response) {
+    const userRepository = getCustomRepository(UserRepository);
+    const { id } = req.body.decoded;
+
+    const user = await userRepository.findOneOrFail({ id });
+
+    const userData = {
+      email: user.email,
+      user_name: user.user_name,
+      created_at: user.created_at,
+    }
+
+    res.status(200).json({ userData })
+  }
+
 };
 
 export { UserController };
 
- // const userData = {
-    //   email: savedUser.email,
-    //   user_name: savedUser.user_name,
-    //   created_at: savedUser.created_at,
-    // };

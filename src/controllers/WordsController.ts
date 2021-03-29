@@ -16,8 +16,6 @@ export class WordsController {
     const { search } = req.query;
 
     if (!search) {
-      console.log('busca vazia')
-
       return res.status(200).json({ message: 'Empty search nothing was found.' })
     }
 
@@ -25,7 +23,6 @@ export class WordsController {
     const word = await wordRepository.find({ vocable: Like(String(StringSearch)) })
 
     if (word.length === 0) {
-      console.log('não encontrada')
       return res.status(200).json({
         message: 'Word not finded!',
         searchedWord: search
@@ -46,8 +43,6 @@ export class WordsController {
     const { id } = req.body.decoded;
 
     const user_id = id;
-
-    console.log(user_id)
 
     const {
       vocable,

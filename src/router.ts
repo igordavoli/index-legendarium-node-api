@@ -23,6 +23,8 @@ routes.post('/signUp', AuthSignUp, userController.signUp);
 
 routes.post('/signIn', AuthSignIn, userController.signIn);
 
+routes.get('/user', AuthToken, userController.userData);
+
 routes.get('/auth', AuthToken, authController.ok)
 
 export { routes };
