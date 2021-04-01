@@ -1,37 +1,48 @@
-import { Request, Response } from 'express';
+import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
+import { AppError } from '../errors/AppError';
 
-const AuthToken = (req: Request, res: Response, next: () => void) => {
+
+interface Decoded {
+  id: string;
+  exp: number
+}
+
+
+
+const AuthToken = (req: Request, res: Response, next: NextFunction) => {
   const authHeader = req.headers.authorization;
 
   if (!authHeader) {
-    return res.status(200).json({ error: 'No token Provided!' });
+    throw new AppError('No token Provided!', 200);
   }
 
   const authHeaderParts = authHeader.split(' ');
 
   if (authHeaderParts.length !== 2) {
-    return res.status(200).json({ error: 'Token misformated!' });
+    throw new AppError('Token misformated!', 200);
   }
 
   const [scheme, token] = authHeaderParts;
 
   if (!/Bearer$/i.test(scheme)) {
-    return res.status(200).json({ error: 'Token error' });
+    throw new AppError('Token error', 200);
   }
 
   const secret = String(process.env.SECRET);
 
-  jwt.verify(token, secret, (err, decoded) => {
+  let decoded;
 
-    if (err || !decoded || typeof decoded !== 'object') {
-      return res.status(200).json({ error: 'Invalid tolken!' });
-    }
+  try {
+    decoded = jwt.verify(token, secret,);
 
-    req.body.decoded = decoded;
+  } catch (error) {
+    throw new AppError(`Invalid tolken! ${error}`, 200);
+  }
 
-    return next();
-  });
+  req.body.decoded = decoded;
+
+  return next();
 }
 
 export { AuthToken };

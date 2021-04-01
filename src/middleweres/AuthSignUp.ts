@@ -1,8 +1,9 @@
-import { Request, Response } from 'express';
+import { Request, Response, NextFunction } from 'express';
 import { getCustomRepository } from 'typeorm';
+import { AppError } from '../errors/AppError';
 import { UserRepository } from '../repositories/UserRepository';
 
-const AuthSignUp = async (req: Request, res: Response, next: () => void) => {
+const AuthSignUp = async (req: Request, res: Response, next: NextFunction) => {
   const { newUser } = req.body;
 
   const newUserAuth = {
@@ -16,13 +17,13 @@ const AuthSignUp = async (req: Request, res: Response, next: () => void) => {
   const hasEmail = await userRepository.findOne({ email: newUserAuth.email });
 
   if (hasEmail) {
-    return res.status(200).json({ message: 'Email already registered!' });
+    throw new AppError('Email already registered!', 200);
   }
 
   const hasUserName = await userRepository.findOne({ user_name: newUserAuth.user_name });
 
   if (hasUserName) {
-    return res.status(200).json({ message: 'User name already exists!' });
+    throw new AppError('User name already exists!', 200);
   }
 
   req.body.validUser = newUserAuth;
