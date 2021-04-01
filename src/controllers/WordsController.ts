@@ -20,17 +20,17 @@ export class WordsController {
     }
 
     const StringSearch = String(search).trim();
-    const word = await wordRepository.find({ vocable: Like(String(StringSearch)) })
+    const words = await wordRepository.find({ vocable: Like(String(StringSearch)) })
 
-    if (word.length === 0) {
-      return res.status(200).json({
+    if (words.length === 0) {
+      return res.status(404).json({
         message: 'Word not finded!',
         searchedWord: search
 
       })
     }
 
-    res.status(200).json(word);
+    res.status(200).json(words);
   }
 
   /*
@@ -60,7 +60,7 @@ export class WordsController {
 
     const stringVocable = String(vocable).trim();
 
-    const hasUser = await userRepository.findOne({ id: user_id });
+    const hasUser = await userRepository.findOneOrFail({ id: user_id });
 
     if (!hasUser) {
       return res.status(200).json({ message: 'User not exists!' });
@@ -88,17 +88,21 @@ export class WordsController {
   }
 
   /*
-    |>EDIT WORD
+    |>FIND WORD
   */
 
   async find(req: Request, res: Response) {
     const { id } = req.params;
 
     const wordRepository = getCustomRepository(WordRepository);
-    const word = await wordRepository.findOne(Number(id));
+    const word = await wordRepository.findOneOrFail(Number(id));
 
     res.status(200).json(word);
   }
+
+  /*
+    |>UPDATE WORD
+  */
 
   async update(req: Request, res: Response) {
     const wordRepository = getCustomRepository(WordRepository);
@@ -133,7 +137,7 @@ export class WordsController {
       see_too: word.see_too,
     });
 
-    const updatedWord = await wordRepository.findOne({ id: word.id });
+    const updatedWord = await wordRepository.findOneOrFail({ id: word.id });
 
     res.status(201).json(updatedWord);
   }

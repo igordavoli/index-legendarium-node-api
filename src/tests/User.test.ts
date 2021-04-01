@@ -28,10 +28,8 @@ describe('User', () => {
 
       expect(res.status).toBe(201);
       expect(res.body).toHaveProperty('token');
-      expect(res.body).toHaveProperty('userData');
-      expect(res.body).toHaveProperty('userData.email', 'user@exemple.com');
-      expect(res.body).toHaveProperty('userData.user_name', 'userExemple');
-      expect(res.body).toHaveProperty('userData.created_at');
+      expect(res.body).toHaveProperty('userNameDB');
+
     })
 
   it('Should NOT be able to create a new user When already exists a user with the same email and user name.',
@@ -45,7 +43,7 @@ describe('User', () => {
           }
         });
 
-      expect(res.status).toBe(200);
+      expect(res.status).toBe(409);
       expect(res.body).toMatchObject({ message: 'Email already registered!' })
     })
 
@@ -62,10 +60,8 @@ describe('User', () => {
 
       expect(res.status).toBe(201);
       expect(res.body).toHaveProperty('token');
-      expect(res.body).toHaveProperty('userData');
-      expect(res.body).toHaveProperty('userData.email', 'user2@exemple.com');
-      expect(res.body).toHaveProperty('userData.user_name', 'user2Exemple');
-      expect(res.body).toHaveProperty('userData.created_at');
+      expect(res.body).toHaveProperty('userNameDB');
+
     })
 
   it('Should NOT be able to create a new user when alredy exists a user with the same user name.',
@@ -79,7 +75,7 @@ describe('User', () => {
           }
         });
 
-      expect(res.status).toBe(200);
+      expect(res.status).toBe(409);
       expect(res.body).toMatchObject({ message: 'User name already exists!' })
     })
 
@@ -107,7 +103,7 @@ describe('User', () => {
           password: 'user123exemple',
         });
 
-      expect(res.status).toBe(200);
+      expect(res.status).toBe(422);
       expect(res.body).toMatchObject({ message: 'User not finded!' })
     }
   )
@@ -120,7 +116,7 @@ describe('User', () => {
           password: 'userExemple123',
         });
 
-      expect(res.status).toBe(200);
+      expect(res.status).toBe(401);
       expect(res.body).toMatchObject({ message: 'Wrong password!' })
     }
   )

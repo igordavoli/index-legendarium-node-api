@@ -17,13 +17,13 @@ const AuthSignUp = async (req: Request, res: Response, next: NextFunction) => {
   const hasEmail = await userRepository.findOne({ email: newUserAuth.email });
 
   if (hasEmail) {
-    throw new AppError('Email already registered!', 200);
+    throw new AppError('Email already registered!', 409);
   }
 
   const hasUserName = await userRepository.findOne({ user_name: newUserAuth.user_name });
 
   if (hasUserName) {
-    throw new AppError('User name already exists!', 200);
+    throw new AppError('User name already exists!', 409);
   }
 
   req.body.validUser = newUserAuth;
