@@ -3,6 +3,7 @@ import { getCustomRepository, Like } from 'typeorm';
 import { WordRepository } from '../repositories/WordRepository';
 import { UserRepository } from '../repositories/UserRepository';
 import saveHistorical from './EditHistoricalController';
+import { AppError } from '../errors/AppError';
 
 
 export class WordsController {
@@ -16,18 +17,14 @@ export class WordsController {
     const { search } = req.query;
 
     if (!search) {
-      return res.status(200).json({ message: 'Empty search nothing was found.' })
+      throw new AppError('Empty search nothing was returned.', 400);
     }
 
     const StringSearch = String(search).trim();
-    const words = await wordRepository.find({ vocable: Like(String(StringSearch)) })
+    const words = await wordRepository.find({ vocable: Like(String(StringSearch)) });
 
     if (words.length === 0) {
-      return res.status(404).json({
-        message: 'Word not finded!',
-        searchedWord: search
-
-      })
+      throw new AppError('Word not finded!', 404);
     }
 
     res.status(200).json(words);
@@ -38,53 +35,58 @@ export class WordsController {
   */
 
   async create(req: Request, res: Response) {
-    const userRepository = getCustomRepository(UserRepository);
-    const wordRepository = getCustomRepository(WordRepository);
-    const { id } = req.body.decoded;
+    try {
+      const userRepository = getCustomRepository(UserRepository);
+      const wordRepository = getCustomRepository(WordRepository);
+      const { id } = req.body.decoded;
 
-    const user_id = id;
+      const user_id = id;
 
-    const {
-      vocable,
-      language,
-      type,
-      meaning,
-      about,
-      pages,
-      see_too
-    } = req.body;
+      const {
+        vocable,
+        language,
+        type,
+        meaning,
+        about,
+        pages,
+        see_too
+      } = req.body;
 
-    if (!vocable) {
-      return res.status(400).json({ message: 'Vocable is a required field!' })
+      if (!vocable) {
+        throw new AppError('Vocable is a required field!', 400);
+      }
+
+      const stringVocable = String(vocable).trim();
+
+      const hasUser = await userRepository.findOneOrFail({ id: user_id });
+
+      if (!hasUser) {
+        throw new AppError('User not exists!', 422);
+      }
+
+      const hasWord = await wordRepository.findOneOrFail({ vocable: Like(stringVocable) });
+
+      if (hasWord) {
+        throw new AppError('Word already exists!', 409);
+      }
+
+      const word = wordRepository.create({
+        vocable,
+        language,
+        type,
+        meaning,
+        about,
+        pages,
+        see_too
+      });
+
+      await wordRepository.save(word);
+
+      res.status(201).json(word);
+
+    } catch (error) {
+      throw new AppError(error);
     }
-
-    const stringVocable = String(vocable).trim();
-
-    const hasUser = await userRepository.findOneOrFail({ id: user_id });
-
-    if (!hasUser) {
-      return res.status(200).json({ message: 'User not exists!' });
-    }
-
-    const hasWord = await wordRepository.findOne({ vocable: Like(stringVocable) });
-
-    if (hasWord) {
-      return res.status(200).json({ message: 'Word already exists!' });
-    }
-
-    const word = wordRepository.create({
-      vocable,
-      language,
-      type,
-      meaning,
-      about,
-      pages,
-      see_too
-    });
-
-    await wordRepository.save(word);
-
-    res.status(201).json(word);
   }
 
   /*
@@ -92,12 +94,17 @@ export class WordsController {
   */
 
   async find(req: Request, res: Response) {
-    const { id } = req.params;
+    try {
+      const { id } = req.params;
 
-    const wordRepository = getCustomRepository(WordRepository);
-    const word = await wordRepository.findOneOrFail(Number(id));
+      const wordRepository = getCustomRepository(WordRepository);
+      const word = await wordRepository.findOneOrFail(Number(id));
 
-    res.status(200).json(word);
+      res.status(200).json(word);
+
+    } catch (error) {
+      throw new AppError(error);
+    }
   }
 
   /*
@@ -105,40 +112,45 @@ export class WordsController {
   */
 
   async update(req: Request, res: Response) {
-    const wordRepository = getCustomRepository(WordRepository);
-    const userRepository = getCustomRepository(UserRepository);
+    try {
+      const { word } = req.body;
+      const user_id = req.body.decoded.id;
 
-    const user_id = req.body.decoded.id;
-    const { word } = req.body;
+      const wordRepository = getCustomRepository(WordRepository);
+      const userRepository = getCustomRepository(UserRepository);
 
-    const hasWord = await wordRepository.findOneOrFail({ id: word.id });
+      const hasWord = await wordRepository.findOneOrFail({ id: word.id });
+      const user = await userRepository.findOneOrFail({ id: user_id });
 
-    const user = await userRepository.findOneOrFail({ id: user_id });
 
-    await saveHistorical(
-      user.id,
-      hasWord.id,
-      hasWord.vocable,
-      hasWord.language,
-      hasWord.type,
-      hasWord.meaning,
-      hasWord.about,
-      hasWord.pages,
-      hasWord.see_too
-    );
+      await saveHistorical(
+        user.id,
+        hasWord.id,
+        hasWord.vocable,
+        hasWord.language,
+        hasWord.type,
+        hasWord.meaning,
+        hasWord.about,
+        hasWord.pages,
+        hasWord.see_too
+      );
 
-    await wordRepository.update({ id: word.id }, {
-      vocable: word.vocable,
-      language: word.language,
-      type: word.type,
-      meaning: word.meaning,
-      about: word.about,
-      pages: word.pages,
-      see_too: word.see_too,
-    });
+      await wordRepository.update({ id: word.id }, {
+        vocable: word.vocable,
+        language: word.language,
+        type: word.type,
+        meaning: word.meaning,
+        about: word.about,
+        pages: word.pages,
+        see_too: word.see_too,
+      });
 
-    const updatedWord = await wordRepository.findOneOrFail({ id: word.id });
+      const updatedWord = await wordRepository.findOneOrFail({ id: word.id });
 
-    res.status(201).json(updatedWord);
+      res.status(201).json(updatedWord);
+
+    } catch (error) {
+      throw new AppError(error);
+    }
   }
 }

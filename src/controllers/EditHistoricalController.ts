@@ -1,6 +1,19 @@
 import { getCustomRepository } from 'typeorm';
 import { EditHistoricalRepository } from '../repositories/EditHistoricalRepository';
 
+// interface Historical {
+//   user_id: string;
+//   word_id: number;
+//   vocable: string;
+//   language: string;
+//   type: string;
+//   meaning: string;
+//   about: string;
+//   pages: string;
+//   see_too: string;
+// }
+
+
 //class EditHistoricalController {
 async function saveHistorical(
   user_id: string,
@@ -31,6 +44,4 @@ async function saveHistorical(
   await editHistoricalRepository.save(historical)
 }
 
-//}
-//export default EditHistoricalController;
 export default saveHistorical;
