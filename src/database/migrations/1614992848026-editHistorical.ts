@@ -12,12 +12,17 @@ export class editHistorical1614992848026 implements MigrationInterface {
           isPrimary: true
         },
         {
+          name: 'word_id',
+          type: 'uuid'
+        },
+        {
           name: 'user_id',
           type: 'uuid'
         },
         {
-          name: 'word_id',
-          type: 'number'
+          name: 'created_at',
+          type: 'timestamp',
+          default: 'now()'
         },
         {
           name: 'vocable',
@@ -53,11 +58,6 @@ export class editHistorical1614992848026 implements MigrationInterface {
           type: 'text',
           isNullable: true
         },
-        {
-          name: 'created_at',
-          type: 'timestamp',
-          default: 'now()'
-        }
       ],
 
       foreignKeys: [

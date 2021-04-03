@@ -6,7 +6,7 @@ import { TokenGenerate } from '../utils/JWT'
 
 class UserController {
   /* 
-    |> SINGNUP
+    |> SIGNUP
   */
 
   async signUp(req: Request, res: Response) {
@@ -17,7 +17,14 @@ class UserController {
     const user = userRepository.create({
       email: validUser.email,
       user_name: validUser.user_name,
-      password: hash
+      password: hash,
+      is_deleted: 0,
+      question_0: 0,
+      question_1: 0,
+      question_2: 0,
+      answer_0: 'test',
+      answer_1: 'test',
+      answer_2: 'test',
     });
 
     await userRepository.save(user);

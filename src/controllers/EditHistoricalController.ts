@@ -17,13 +17,12 @@ import { EditHistoricalRepository } from '../repositories/EditHistoricalReposito
 //class EditHistoricalController {
 async function saveHistorical(
   user_id: string,
-  word_id: number,
+  word_id: string,
   vocable: string,
   language: string,
   type: string,
   meaning: string,
   about: string,
-  pages: string,
   see_too: string,
 ) {
 
@@ -37,7 +36,6 @@ async function saveHistorical(
     type,
     meaning,
     about,
-    pages,
     see_too,
   })
 

@@ -8,6 +8,9 @@ class User {
   readonly id: string;
 
   @Column()
+  is_deleted: number
+
+  @Column()
   email: string;
 
   @Column()
@@ -17,6 +20,24 @@ class User {
     // { select: false }
   )
   password: string;
+
+  @Column()
+  question_0: number;
+
+  @Column()
+  question_1: number;
+
+  @Column()
+  question_2: number;
+
+  @Column()
+  answer_0: string;
+
+  @Column()
+  answer_1: string;
+
+  @Column()
+  answer_2: string;
 
   @CreateDateColumn()
   readonly created_at: Date;

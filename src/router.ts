@@ -5,6 +5,7 @@ import { AuthController } from './controllers/AuthController';
 import { AuthSignIn } from './middleweres/AuthSignIn';
 import { AuthToken } from './middleweres/AuthToken';
 import { AuthSignUp } from './middleweres/AuthSignUp';
+
 const routes = Router();
 const wordsController = new WordsController();
 const userController = new UserController();

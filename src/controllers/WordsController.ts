@@ -38,9 +38,7 @@ export class WordsController {
     try {
       const userRepository = getCustomRepository(UserRepository);
       const wordRepository = getCustomRepository(WordRepository);
-      const { id } = req.body.decoded;
-
-      const user_id = id;
+      const user_id = req.body.decoded.id;
 
       const {
         vocable,
@@ -64,19 +62,19 @@ export class WordsController {
         throw new AppError('User not exists!', 422);
       }
 
-      const hasWord = await wordRepository.findOneOrFail({ vocable: Like(stringVocable) });
+      const hasWord = await wordRepository.findOne({ vocable: Like(stringVocable) });
 
       if (hasWord) {
         throw new AppError('Word already exists!', 409);
       }
 
       const word = wordRepository.create({
+        created_by: user_id,
         vocable,
         language,
         type,
         meaning,
         about,
-        pages,
         see_too
       });
 
@@ -97,8 +95,10 @@ export class WordsController {
     try {
       const { id } = req.params;
 
+      console.log(id)
+
       const wordRepository = getCustomRepository(WordRepository);
-      const word = await wordRepository.findOneOrFail(Number(id));
+      const word = await wordRepository.findOneOrFail(id);
 
       res.status(200).json(word);
 
@@ -131,7 +131,6 @@ export class WordsController {
         hasWord.type,
         hasWord.meaning,
         hasWord.about,
-        hasWord.pages,
         hasWord.see_too
       );
 
@@ -141,7 +140,6 @@ export class WordsController {
         type: word.type,
         meaning: word.meaning,
         about: word.about,
-        pages: word.pages,
         see_too: word.see_too,
       });
 

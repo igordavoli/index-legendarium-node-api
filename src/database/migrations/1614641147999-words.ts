@@ -8,11 +8,12 @@ export class words1614641147999 implements MigrationInterface {
       columns: [
         {
           name: 'id',
-          type: 'integer',
-          unsigned: true,
+          type: 'uuid',
           isPrimary: true,
-          isGenerated: true,
-          generationStrategy: 'increment'
+        },
+        {
+          name: "created_by",
+          type: 'uuid',
         },
         {
           name: 'vocable',
@@ -39,20 +40,24 @@ export class words1614641147999 implements MigrationInterface {
           isNullable: true
         },
         {
-          name: 'pages',
-          type: 'text',
-          isNullable: true
-        },
-
-        {
           name: 'see_too',
           type: 'text',
           isNullable: true
         },
         {
-          name: "created_at",
+          name: 'created_at',
           type: 'timestamp',
           default: "now()"
+        },
+      ],
+      foreignKeys: [
+        {
+          name: 'FKCreator',
+          referencedTableName: 'users',
+          referencedColumnNames: ['id'],
+          columnNames: ['created_by'],
+          onDelete: 'SET NULL',
+          onUpdate: 'CASCADE'
         }
       ]
     }));

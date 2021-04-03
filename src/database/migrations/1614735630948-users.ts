@@ -12,6 +12,15 @@ export class users1614735630948 implements MigrationInterface {
           isPrimary: true
         },
         {
+          name: 'created_at',
+          type: 'timestamp',
+          default: 'now()'
+        },
+        {
+          name: 'is_deleted',
+          type: 'number'
+        },
+        {
           name: 'email',
           type: 'varchar'
         },
@@ -24,10 +33,29 @@ export class users1614735630948 implements MigrationInterface {
           type: 'string'
         },
         {
-          name: 'created_at',
-          type: 'timestamp',
-          default: 'now()'
-        }
+          name: 'question_0',
+          type: 'number'
+        },
+        {
+          name: 'question_1',
+          type: 'number'
+        },
+        {
+          name: 'question_2',
+          type: 'number'
+        },
+        {
+          name: 'answer_0',
+          type: 'varchar'
+        },
+        {
+          name: 'answer_1',
+          type: 'varchar'
+        },
+        {
+          name: 'answer_2',
+          type: 'varchar'
+        },
 
       ]
     })

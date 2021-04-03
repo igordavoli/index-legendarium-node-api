@@ -9,6 +9,9 @@ class EditHistorical {
   @PrimaryColumn()
   readonly id: string;
 
+  @CreateDateColumn()
+  created_at: Date;
+
   @Column()
   user_id: string;
 
@@ -17,7 +20,7 @@ class EditHistorical {
   user: User;
 
   @Column()
-  word_id: number;
+  word_id: string;
 
   @ManyToOne(() => Word)
   @JoinColumn({ name: 'word_id' })
@@ -39,13 +42,8 @@ class EditHistorical {
   about: string;
 
   @Column()
-  pages: string;
-
-  @Column()
   see_too: string;
 
-  @CreateDateColumn()
-  created_at: Date;
 
   constructor() {
     if (!this.id) {
