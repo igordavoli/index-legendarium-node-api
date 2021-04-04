@@ -95,8 +95,6 @@ export class WordsController {
     try {
       const { id } = req.params;
 
-      console.log(id)
-
       const wordRepository = getCustomRepository(WordRepository);
       const word = await wordRepository.findOneOrFail(id);
 

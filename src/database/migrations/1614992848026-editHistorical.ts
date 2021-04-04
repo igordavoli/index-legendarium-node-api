@@ -49,11 +49,6 @@ export class editHistorical1614992848026 implements MigrationInterface {
           isNullable: true
         },
         {
-          name: 'pages',
-          type: 'text',
-          isNullable: true
-        },
-        {
           name: 'see_too',
           type: 'text',
           isNullable: true

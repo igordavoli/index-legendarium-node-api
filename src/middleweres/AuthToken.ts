@@ -5,7 +5,7 @@ import { AppError } from '../errors/AppError';
 const AuthToken = (req: Request, res: Response, next: NextFunction) => {
   const authHeader = req.headers.authorization;
 
-  if (!authHeader) {
+  if (!authHeader || authHeader === 'null') {
     throw new AppError('No token Provided!', 401);
   }
 
