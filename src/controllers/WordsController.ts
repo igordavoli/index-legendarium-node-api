@@ -4,13 +4,10 @@ import { WordRepository } from '../repositories/WordRepository';
 import { UserRepository } from '../repositories/UserRepository';
 import saveHistorical from './EditHistoricalController';
 import { AppError } from '../errors/AppError';
+import { WordsPagesController } from './WordsPagesController';
 
 
 export class WordsController {
-
-  /*
-    |>QUERY WORD
-  */
 
   async query(req: Request, res: Response) {
     const wordRepository = getCustomRepository(WordRepository);
@@ -29,10 +26,6 @@ export class WordsController {
 
     res.status(200).json(words);
   }
-
-  /*
-    |>ADD WORD
-  */
 
   async create(req: Request, res: Response) {
     try {
@@ -80,16 +73,16 @@ export class WordsController {
 
       await wordRepository.save(word);
 
+      const savedWord = await wordRepository.findOneOrFail({ vocable: word.vocable })
+
+      WordsPagesController(pages, savedWord.id)
+
       res.status(201).json(word);
 
     } catch (error) {
       throw new AppError(error);
     }
   }
-
-  /*
-    |>FIND WORD
-  */
 
   async find(req: Request, res: Response) {
     try {
@@ -104,10 +97,6 @@ export class WordsController {
       throw new AppError(error);
     }
   }
-
-  /*
-    |>UPDATE WORD
-  */
 
   async update(req: Request, res: Response) {
     try {

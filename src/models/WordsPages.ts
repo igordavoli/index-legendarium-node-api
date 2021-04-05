@@ -7,9 +7,12 @@ class WordsPages {
   @PrimaryGeneratedColumn('increment')
   id: number
 
+  @Column()
+  word_id: string
+
   @ManyToMany(() => Word)
   @JoinColumn({ name: 'word_id' })
-  word_id: string
+  word: Word
 
   @Column()
   page: number

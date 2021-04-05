@@ -5,9 +5,6 @@ import bcrypt from 'bcryptjs';
 import { TokenGenerate } from '../utils/JWT'
 
 class UserController {
-  /* 
-    |> SIGNUP
-  */
 
   async signUp(req: Request, res: Response) {
     const { validUser } = req.body;
@@ -38,10 +35,6 @@ class UserController {
     res.status(201).json({ token, userNameDB });
   }
 
-  /*
-    |> SINGN IN
-  */
-
   async signIn(req: Request, res: Response) {
     const { hasUser } = req.body;
     const token = TokenGenerate(hasUser.id)
@@ -49,10 +42,6 @@ class UserController {
 
     res.status(200).json({ token, userNameDB });
   }
-
-  /*
-    |> USERS PAGE
-  */
 
   async userData(req: Request, res: Response) {
     const userRepository = getCustomRepository(UserRepository);

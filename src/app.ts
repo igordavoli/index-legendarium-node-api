@@ -5,6 +5,7 @@ import createConnection from './database';
 import { routes } from './router'
 import cors from 'cors';
 import { AppError } from './errors/AppError';
+
 const corsOptions = {
   origin: 'http://localhost:3000',
   Credentials: true,
@@ -21,9 +22,10 @@ app.use(routes);
 
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   if (err instanceof AppError) {
-    return res.status(err.statusCode).json({ message: err.errorMessage });
+    console.log(err)
+    return res.status(200).json(err);
   }
-  return res.status(500).json({ message: `Internal server error ${err.message}` })
+  return res.status(500).json({ message: `Internal server error ${err}` })
 })
 
 export { app };
