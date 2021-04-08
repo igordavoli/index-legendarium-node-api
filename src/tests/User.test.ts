@@ -21,7 +21,7 @@ describe('User', () => {
         .send({
           newUser: {
             email: 'user@exemple.com',
-            user_name: 'userExemple',
+            userName: 'userExemple',
             password: 'user123exemple',
           }
         });
@@ -32,13 +32,13 @@ describe('User', () => {
 
     })
 
-  it('Should NOT be able to create a new user When already exists a user with the same email and user name.',
+  it('Should NOT be able to create a new user when already exists a user with the same email and user name.',
     async () => {
       const res = await request(app).post('/signUp')
         .send({
           newUser: {
             email: 'user@exemple.com',
-            user_name: 'userExemple',
+            userName: 'userExemple',
             password: 'user123exemple',
           }
         });
@@ -53,7 +53,7 @@ describe('User', () => {
         .send({
           newUser: {
             email: 'user2@exemple.com',
-            user_name: 'user2Exemple',
+            userName: 'user2Exemple',
             password: 'user123exemple',
           }
         });
@@ -70,7 +70,7 @@ describe('User', () => {
         .send({
           newUser: {
             email: 'user3@exemple.com',
-            user_name: 'user2Exemple',
+            userName: 'user2Exemple',
             password: 'user123exemple',
           }
         });

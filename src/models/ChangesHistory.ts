@@ -3,26 +3,26 @@ import { v4 as uuid } from 'uuid';
 import { User } from "./User";
 import { Word } from "./Word";
 
-@Entity('edit_historical')
-class EditHistorical {
+@Entity('changes_history')
+class ChangesHistory {
 
   @PrimaryColumn()
   readonly id: string;
 
   @CreateDateColumn()
-  created_at: Date;
+  createdAt: Date;
 
-  @Column()
-  user_id: string;
+  @Column({ name: 'created_by' })
+  createdBy: string;
 
-  @ManyToOne(() => User)
-  @JoinColumn({ name: 'user_id' })
+  @ManyToOne(type => User, changesHistory => ChangesHistory)
+  @JoinColumn({ name: 'created_by' })
   user: User;
 
-  @Column()
-  word_id: string;
+  @Column({ name: 'word_id' })
+  wordId: string;
 
-  @ManyToOne(() => Word)
+  @ManyToOne(type => Word, changesHistory => ChangesHistory)
   @JoinColumn({ name: 'word_id' })
   word: Word;
 
@@ -42,7 +42,7 @@ class EditHistorical {
   about: string;
 
   @Column()
-  see_too: string;
+  seeToo: string;
 
 
   constructor() {
@@ -52,4 +52,4 @@ class EditHistorical {
   }
 }
 
-export { EditHistorical };
+export { ChangesHistory };

@@ -1,5 +1,8 @@
-import { Column, CreateDateColumn, Entity, PrimaryColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinColumn, OneToMany, PrimaryColumn } from "typeorm";
 import { v4 as uuid } from 'uuid';
+import { ChangesHistory } from "./ChangesHistory";
+import { Pages } from "./Pages";
+import { Word } from "./Word";
 
 @Entity('users')
 class User {
@@ -7,40 +10,46 @@ class User {
   @PrimaryColumn()
   readonly id: string;
 
-  @Column()
-  is_deleted: number
+  @OneToMany(type => Word, user => User)
+  words: Word[];
+
+  @OneToMany(type => Pages, user => User)
+  pages: Pages[]
+
+  @OneToMany(type => ChangesHistory, user => User)
+
+  // @Column({ name: 'deleted_at' })
+  // deletedAt: boolean
 
   @Column()
   email: string;
 
-  @Column()
-  user_name: string;
+  @Column({ name: 'user_name' })
+  userName: string;
 
-  @Column(
-    // { select: false }
-  )
+  @Column()
   password: string;
 
-  @Column()
-  question_0: number;
+  // @Column({ name: 'question_0' })
+  // question0: number;
 
-  @Column()
-  question_1: number;
+  // @Column({ name: 'question_1' })
+  // question1: number;
 
-  @Column()
-  question_2: number;
+  // @Column({ name: 'question_2' })
+  // question2: number;
 
-  @Column()
-  answer_0: string;
+  // @Column({ name: 'answer_0' })
+  // answer0: string;
 
-  @Column()
-  answer_1: string;
+  // @Column({ name: 'answer_1' })
+  // answer1: string;
 
-  @Column()
-  answer_2: string;
+  // @Column({ name: 'answer_2' })
+  // answer2: string;
 
-  @CreateDateColumn()
-  readonly created_at: Date;
+  @CreateDateColumn({ name: 'created_at' })
+  readonly createdAt: Date;
 
   constructor() {
     if (!this.id) {

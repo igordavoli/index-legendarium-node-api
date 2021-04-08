@@ -1,18 +1,28 @@
-import { Entity, Column, CreateDateColumn, JoinColumn, ManyToOne, PrimaryColumn } from 'typeorm';
+import { Entity, Column, CreateDateColumn, JoinColumn, ManyToOne, PrimaryColumn, ManyToMany, JoinTable, OneToMany } from 'typeorm';
 import { v4 as uuid } from 'uuid';
+import { ChangesHistory } from './ChangesHistory';
+import { Pages } from './Pages';
 import { User } from './User';
+
 
 @Entity('words')
 class Word {
+
   @PrimaryColumn()
   readonly id: string;
 
-  @Column()
-  created_by: string;
+  @OneToMany(type => ChangesHistory, word => Word)
 
-  @ManyToOne(() => User)
+  @ManyToMany(type => Pages)
+  @JoinTable()
+  pages: Pages
+
+  @ManyToOne(type => User, words => Word)
   @JoinColumn({ name: 'created_by' })
   user: User
+
+  @Column({ name: 'created_by' })
+  createdBy: string;
 
   @Column()
   vocable: string;
@@ -29,11 +39,11 @@ class Word {
   @Column()
   about: string;
 
-  @Column()
-  see_too: string;
+  @Column({ name: 'see_too' })
+  seeToo: string;
 
-  @CreateDateColumn()
-  readonly created_at: Date;
+  @CreateDateColumn({ name: 'created_at' })
+  readonly createdAt: Date;
 
   constructor() {
     if (!this.id) {

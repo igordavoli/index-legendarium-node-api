@@ -1,19 +1,35 @@
-import { getCustomRepository } from 'typeorm';
-import { WordsPagesRepository } from '../repositories/WordsPages';
+// import { getCustomRepository } from 'typeorm';
+// import { WordsPagesRepository } from '../repositories/WordsPages';
 
-const WordsPagesController = (pages: string, wordId: string) => {
-  const wordsPagesRepository = getCustomRepository(WordsPagesRepository);
+// class WordsPagesController {
 
-  const pagesArr = pages.split(', ');
+//   save(pages: string, wordId: string) {
+//     const wordsPagesRepository = getCustomRepository(WordsPagesRepository);
 
-  pagesArr.forEach(async (page) => {
-    const wordPage = wordsPagesRepository.create({
-      word_id: wordId,
-      page: Number(page)
-    });
+//     const pagesArr = pages.split(', ');
 
-    await wordsPagesRepository.save(wordPage)
-  })
-}
+//     pagesArr.forEach(async (page) => {
+//       const wordPage = wordsPagesRepository.create({
+//         word_id: wordId,
+//         page: Number(page)
+//       });
 
-export { WordsPagesController };
+//       await wordsPagesRepository.save(wordPage)
+//     })
+//   }
+
+//   async getByWordId(word_id: string) {
+//     const wordsPagesRepository = getCustomRepository(WordsPagesRepository);
+
+//     const pages = await wordsPagesRepository
+//       .createQueryBuilder('words_pages')
+//       .select(['words_pages.page'])
+//       .where({ word_id })
+//       .getMany();
+//     console.log(pages)
+
+//     return pages;
+//   }
+
+// }
+// export { WordsPagesController };

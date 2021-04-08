@@ -13,22 +13,22 @@ class UserController {
 
     const user = userRepository.create({
       email: validUser.email,
-      user_name: validUser.user_name,
+      userName: validUser.userName,
       password: hash,
-      is_deleted: 0,
-      question_0: 0,
-      question_1: 0,
-      question_2: 0,
-      answer_0: 'test',
-      answer_1: 'test',
-      answer_2: 'test',
+      // isDeleted: 0,
+      // question0: 0,
+      // question1: 0,
+      // question2: 0,
+      // answer0: 'test',
+      // answer1: 'test',
+      // answer2: 'test',
     });
 
     await userRepository.save(user);
 
     const savedUser = await userRepository.findOneOrFail({ email: validUser.email });
 
-    const userNameDB = savedUser.user_name
+    const userNameDB = savedUser.userName
 
     const token = TokenGenerate(savedUser.id)
 
@@ -38,7 +38,7 @@ class UserController {
   async signIn(req: Request, res: Response) {
     const { hasUser } = req.body;
     const token = TokenGenerate(hasUser.id)
-    const userNameDB = hasUser.user_name;
+    const userNameDB = hasUser.userName;
 
     res.status(200).json({ token, userNameDB });
   }
@@ -51,8 +51,8 @@ class UserController {
 
     const userData = {
       email: user.email,
-      user_name: user.user_name,
-      created_at: user.created_at,
+      userName: user.userName,
+      createdAt: user.createdAt,
     }
 
     res.status(200).json({ userData })

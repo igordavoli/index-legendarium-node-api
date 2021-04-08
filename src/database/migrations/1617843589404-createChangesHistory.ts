@@ -1,23 +1,32 @@
-import { MigrationInterface, QueryRunner, Table } from 'typeorm';
+import { MigrationInterface, QueryRunner, Table } from "typeorm";
 
-export class words1614641147999 implements MigrationInterface {
+export class createChangesHistory1617843589404 implements MigrationInterface {
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(new Table({
-      name: 'words',
+      name: 'changes_history',
       columns: [
         {
           name: 'id',
           type: 'uuid',
-          isPrimary: true,
+          isPrimary: true
         },
         {
-          name: "created_by",
-          type: 'uuid',
+          name: 'word_id',
+          type: 'uuid'
+        },
+        {
+          name: 'created_by',
+          type: 'uuid'
+        },
+        {
+          name: 'created_at',
+          type: 'timestamp',
+          default: 'now()'
         },
         {
           name: 'vocable',
-          type: 'varchar'
+          type: 'varchar',
         },
         {
           name: 'language',
@@ -44,19 +53,23 @@ export class words1614641147999 implements MigrationInterface {
           type: 'text',
           isNullable: true
         },
-        {
-          name: 'created_at',
-          type: 'timestamp',
-          default: "now()"
-        },
       ],
+
       foreignKeys: [
         {
-          name: 'FKCreator',
+          name: 'FKUser',
           referencedTableName: 'users',
           referencedColumnNames: ['id'],
           columnNames: ['created_by'],
           onDelete: 'SET NULL',
+          onUpdate: 'CASCADE'
+        },
+        {
+          name: 'FKWords',
+          referencedTableName: 'words',
+          referencedColumnNames: ['id'],
+          columnNames: ['word_id'],
+          onDelete: 'CASCADE',
           onUpdate: 'CASCADE'
         }
       ]
@@ -64,7 +77,7 @@ export class words1614641147999 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable('words');
+    await queryRunner.dropTable('changes-history');
   }
 
 }
