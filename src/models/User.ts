@@ -10,14 +10,17 @@ class User {
   @PrimaryColumn()
   readonly id: string;
 
+  @CreateDateColumn({ name: 'created_at' })
+  readonly createdAt: Date;
+
   @OneToMany(type => Word, user => User)
-  words: Word[];
+  wordsCreated: Word[];
 
   @OneToMany(type => Pages, user => User)
-  pages: Pages[]
+  pagesAdded: Pages[]
 
   @OneToMany(type => ChangesHistory, user => User)
-
+  changesHistory: ChangesHistory[]
   // @Column({ name: 'deleted_at' })
   // deletedAt: boolean
 
@@ -47,9 +50,6 @@ class User {
 
   // @Column({ name: 'answer_2' })
   // answer2: string;
-
-  @CreateDateColumn({ name: 'created_at' })
-  readonly createdAt: Date;
 
   constructor() {
     if (!this.id) {

@@ -9,22 +9,16 @@ class ChangesHistory {
   @PrimaryColumn()
   readonly id: string;
 
-  @CreateDateColumn()
-  createdAt: Date;
-
-  @Column({ name: 'created_by' })
-  createdBy: string;
+  @ManyToOne(type => Word, changesHistory => ChangesHistory)
+  @JoinColumn({ name: 'word_id' })
+  wordId: Word;
 
   @ManyToOne(type => User, changesHistory => ChangesHistory)
   @JoinColumn({ name: 'created_by' })
-  user: User;
+  createdBy: User;
 
-  @Column({ name: 'word_id' })
-  wordId: string;
-
-  @ManyToOne(type => Word, changesHistory => ChangesHistory)
-  @JoinColumn({ name: 'word_id' })
-  word: Word;
+  @CreateDateColumn({ name: 'created_at' })
+  createdAt: Date;
 
   @Column()
   vocable: string;
@@ -41,9 +35,8 @@ class ChangesHistory {
   @Column()
   about: string;
 
-  @Column()
+  @Column({ name: 'see_too' })
   seeToo: string;
-
 
   constructor() {
     if (!this.id) {

@@ -12,17 +12,14 @@ class Word {
   readonly id: string;
 
   @OneToMany(type => ChangesHistory, word => Word)
-
-  @ManyToMany(type => Pages)
-  @JoinTable()
-  pages: Pages
+  changesHistory: ChangesHistory[];
 
   @ManyToOne(type => User, words => Word)
   @JoinColumn({ name: 'created_by' })
-  user: User
+  createdBy: User;
 
-  @Column({ name: 'created_by' })
-  createdBy: string;
+  @CreateDateColumn({ name: 'created_at' })
+  readonly createdAt: Date;
 
   @Column()
   vocable: string;
@@ -36,21 +33,21 @@ class Word {
   @Column()
   meaning: string;
 
+  @ManyToMany(() => Pages, pages => pages.words)
+  @JoinTable()
+  pages: Pages[];
+
   @Column()
   about: string;
 
   @Column({ name: 'see_too' })
   seeToo: string;
 
-  @CreateDateColumn({ name: 'created_at' })
-  readonly createdAt: Date;
-
   constructor() {
     if (!this.id) {
       this.id = uuid()
     }
   }
-
 }
 
 export { Word };

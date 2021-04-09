@@ -1,45 +1,42 @@
 import { getCustomRepository } from 'typeorm';
-import { EditHistoricalRepository } from '../repositories/EditHistoricalRepository';
+import { ChangesHistoryRepository } from '../repositories/ChagesHistoryRepository';
 
 // interface Historical {
-//   user_id: string;
-//   word_id: number;
+//   userId: string;
+//   wordId: number;
 //   vocable: string;
 //   language: string;
 //   type: string;
 //   meaning: string;
 //   about: string;
-//   pages: string;
+//   pagT: string;
 //   see_too: string;
 // }
 
 
 //class EditHistoricalController {
+
 async function saveHistorical(
-  user_id: string,
-  word_id: string,
   vocable: string,
   language: string,
   type: string,
   meaning: string,
   about: string,
-  see_too: string,
+  seeToo: string,
 ) {
 
-  const editHistoricalRepository = getCustomRepository(EditHistoricalRepository);
+  const changesHistoryRepository = getCustomRepository(ChangesHistoryRepository);
 
-  const historical = editHistoricalRepository.create({
-    user_id,
-    word_id,
+  const historical = changesHistoryRepository.create({
     vocable,
     language,
     type,
     meaning,
     about,
-    see_too,
+    seeToo,
   })
 
-  await editHistoricalRepository.save(historical)
+  await changesHistoryRepository.save(historical)
 }
 
 export default saveHistorical;

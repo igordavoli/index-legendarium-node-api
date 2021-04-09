@@ -4,7 +4,8 @@ import { WordRepository } from '../repositories/WordRepository';
 import { UserRepository } from '../repositories/UserRepository';
 //import saveHistorical from './EditHistoricalController';
 import { AppError } from '../errors/AppError';
-//import { WordsPagesController } from './WordsPagesController';
+import { Pages } from '../models/Pages';
+import { PagesRepository } from '../repositories/PagesRepository';
 
 
 export class WordsController {
@@ -35,9 +36,12 @@ export class WordsController {
 
   async create(req: Request, res: Response) {
     try {
-      // const wordsPages = new WordsPagesController()
+      // const pagesController = new PagesController()
       const userRepository = getCustomRepository(UserRepository);
       const wordRepository = getCustomRepository(WordRepository);
+      const pagesRepository = getCustomRepository(PagesRepository);
+
+
       const userId = req.body.decoded.id;
       const { word } = req.body;
 
@@ -45,20 +49,28 @@ export class WordsController {
         throw new AppError('Vocable is a required field!', 400);
       }
 
-      const stringVocable = String(word.vocable).trim();
-      const hasUser = await userRepository.findOneOrFail({ id: userId });
+      await userRepository.findOneOrFail({ id: userId });
 
-      if (!hasUser) {
-        throw new AppError('User not exists!', 422);
-      }
-
-      const hasWord = await wordRepository.findOne({ vocable: Like(stringVocable) });
+      const hasWord = await wordRepository.findOne({ vocable: Like(word.vocable) });
 
       if (hasWord) {
         throw new AppError('Word already exists!', 409);
       }
 
+      //const pages = pagesController.savePages(word.pages, userId)
+
+
+      const _pages = word.pages.split(',').map((page: string) => Number(page));
+
+      const PagesArr = _pages.map((page: number) => {
+        return pagesRepository.create({ page, createdBy: userId });
+      })
+
+      await pagesRepository.save(PagesArr);
+
+
       const newWord = wordRepository.create({
+        pages: PagesArr,
         createdBy: userId,
         vocable: word.vocable,
         language: word.language,
@@ -72,7 +84,6 @@ export class WordsController {
 
       const savedWord = await wordRepository.findOneOrFail({ vocable: word.vocable })
 
-      //wordsPages.save(pages, savedWord.id)
 
       res.status(201).json({ savedWord });
 
