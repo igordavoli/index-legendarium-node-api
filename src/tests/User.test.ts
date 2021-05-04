@@ -22,13 +22,13 @@ describe('User', () => {
           newUser: {
             email: 'user@exemple.com',
             userName: 'userExemple',
-            password: 'user123exemple',
+            password: 'user123Exemple',
           }
         });
 
       expect(res.status).toBe(201);
       expect(res.body).toHaveProperty('token');
-      expect(res.body).toHaveProperty('userNameDB');
+      expect(res.body).toHaveProperty('user');
 
     })
 
@@ -39,7 +39,7 @@ describe('User', () => {
           newUser: {
             email: 'user@exemple.com',
             userName: 'userExemple',
-            password: 'user123exemple',
+            password: 'user123Exemple',
           }
         });
 
@@ -47,31 +47,31 @@ describe('User', () => {
       expect(res.body).toMatchObject({ message: 'Email already registered!' })
     })
 
-  it('Should be able to create a another new user with diferent email and user name.',
+  it('Should be able to create a another user with different email and user name.',
     async () => {
       const res = await request(app).post('/signUp')
         .send({
           newUser: {
             email: 'user2@exemple.com',
             userName: 'user2Exemple',
-            password: 'user123exemple',
+            password: 'user123Exemple',
           }
         });
 
       expect(res.status).toBe(201);
       expect(res.body).toHaveProperty('token');
-      expect(res.body).toHaveProperty('userNameDB');
+      expect(res.body).toHaveProperty('user');
 
     })
 
-  it('Should NOT be able to create a new user when alredy exists a user with the same user name.',
+  it('Should NOT be able to create a new user when already exists a user with the same user name.',
     async () => {
       const res = await request(app).post('/signUp')
         .send({
           newUser: {
             email: 'user3@exemple.com',
             userName: 'user2Exemple',
-            password: 'user123exemple',
+            password: 'user123Exemple',
           }
         });
 
@@ -83,32 +83,32 @@ describe('User', () => {
     |> SINGN IN
   */
 
-  it('Should be able to login a user when inputed a existent email and a corespondent password.',
+  it('Should be able to login a user when inputted a existent email and a corespondent password.',
     async () => {
       const res = await request(app).post('/signIn')
         .send({
           email: 'user@exemple.com',
-          password: 'user123exemple',
+          password: 'user123Exemple',
         });
 
       expect(res.status).toBe(200);
     }
   )
 
-  it('Shoud be able to NOT permit a login when inputed a inexistent email.',
+  it('Should be able to NOT permit a login when inputted a inexistent email.',
     async () => {
       const res = await request(app).post('/signIn')
         .send({
           email: 'user@fail-exemple.com',
-          password: 'user123exemple',
+          password: 'user123Exemple',
         });
 
       expect(res.status).toBe(422);
-      expect(res.body).toMatchObject({ message: 'User not finded!' })
+      expect(res.body).toMatchObject({ message: 'User not found!' })
     }
   )
 
-  it('Shoud be able to NOT permit a login when inputed a incorrect password.',
+  it('Should be able to NOT permit a login when inputted a incorrect password.',
     async () => {
       const res = await request(app).post('/signIn')
         .send({

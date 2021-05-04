@@ -13,7 +13,7 @@ const AuthSignIn = async (req: Request, res: Response, next: NextFunction) => {
 
 
   if (!hasUser) {
-    throw new AppError('User not finded!', 422);
+    throw new AppError('User not found!', 422);
   }
 
   const isPasswordCorrect = await bcrypt.compare(password, hasUser.password);

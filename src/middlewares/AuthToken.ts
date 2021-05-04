@@ -12,7 +12,7 @@ const AuthToken = (req: Request, res: Response, next: NextFunction) => {
   const authHeaderParts = authHeader.split(' ');
 
   if (authHeaderParts.length !== 2) {
-    throw new AppError('Token misformated!', 401);
+    throw new AppError('Token misformatted!', 401);
   }
 
   const [scheme, token] = authHeaderParts;
@@ -28,7 +28,7 @@ const AuthToken = (req: Request, res: Response, next: NextFunction) => {
   try {
     decoded = jwt.verify(token, secret,);
   } catch (error) {
-    throw new AppError(`Invalid tolken! ${error}`, 401);
+    throw new AppError(`Invalid token! ${error}`, 401);
   }
 
   req.body.decoded = decoded;

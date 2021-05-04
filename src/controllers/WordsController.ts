@@ -2,7 +2,6 @@ import { Request, Response } from 'express';
 import { getCustomRepository, Like } from 'typeorm';
 import { WordRepository } from '../repositories/WordRepository';
 import { UserRepository } from '../repositories/UserRepository';
-//import saveHistorical from './EditHistoricalController';
 import { AppError } from '../errors/AppError';
 import { Pages } from '../models/Pages';
 import { PagesRepository } from '../repositories/PagesRepository';
@@ -22,7 +21,7 @@ export class WordsController {
     const words = await wordRepository.find({ vocable: Like(String(_search)) });
 
     if (words.length === 0) {
-      throw new AppError('Word not finded!', 404);
+      throw new AppError('Word not found!', 404);
     }
 
     res.status(200).json(words);

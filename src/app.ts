@@ -2,7 +2,7 @@ import 'reflect-metadata';
 import express from 'express';
 import 'express-async-errors';
 import createConnection from './database';
-import { routes } from './router'
+import { routes } from './routes'
 import cors from 'cors';
 import { AppErrors } from './middlewares/Errors';
 
