@@ -7,11 +7,10 @@ import { AppError } from '../errors/AppError';
 import { Pages } from '../models/Pages';
 import { PagesRepository } from '../repositories/PagesRepository';
 
-
 export class WordsController {
 
   async query(req: Request, res: Response) {
-    //const wordsPages = new WordsPagesController()
+
     const wordRepository = getCustomRepository(WordRepository);
     const { search } = req.query;
 
@@ -26,21 +25,14 @@ export class WordsController {
       throw new AppError('Word not finded!', 404);
     }
 
-    // words.forEach(async (word) => {
-    //   word.pages = await wordsPages.getByWordId(word.id);
-    // })
-
-    console.log(words)
     res.status(200).json(words);
   }
 
   async create(req: Request, res: Response) {
     try {
-      // const pagesController = new PagesController()
       const userRepository = getCustomRepository(UserRepository);
       const wordRepository = getCustomRepository(WordRepository);
       const pagesRepository = getCustomRepository(PagesRepository);
-
 
       const userId = req.body.decoded.id;
       const { word } = req.body;
@@ -57,9 +49,6 @@ export class WordsController {
         throw new AppError('Word already exists!', 409);
       }
 
-      //const pages = pagesController.savePages(word.pages, userId)
-
-
       const _pages = word.pages.split(',').map((page: string) => Number(page));
 
       const PagesArr = _pages.map((page: number) => {
@@ -67,7 +56,6 @@ export class WordsController {
       })
 
       await pagesRepository.save(PagesArr);
-
 
       const newWord = wordRepository.create({
         pages: PagesArr,
@@ -83,7 +71,6 @@ export class WordsController {
       await wordRepository.save(newWord);
 
       const savedWord = await wordRepository.findOneOrFail({ vocable: word.vocable })
-
 
       res.status(201).json({ savedWord });
 

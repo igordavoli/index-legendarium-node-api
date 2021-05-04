@@ -4,7 +4,7 @@ import 'express-async-errors';
 import createConnection from './database';
 import { routes } from './router'
 import cors from 'cors';
-import { AppErrors } from './middleweres/Errors';
+import { AppErrors } from './middlewares/Errors';
 
 // const corsOptions = {
 //   origin: 'http://localhost:3000',
