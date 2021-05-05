@@ -1,20 +1,17 @@
 import { Request, Response, NextFunction } from 'express';
-import { getCustomRepository } from 'typeorm';
-import { UserRepository } from '../repositories/UserRepository';
-import bcrypt from 'bcryptjs';
+import { UserService } from '../services/userService';
 import { AppError } from '../errors/AppError';
+import bcrypt from 'bcryptjs';
 
 const AuthSignIn = async (req: Request, res: Response, next: NextFunction) => {
   const { email, password } = req.body;
-
-  const userRepository = getCustomRepository(UserRepository);
-
-  const hasUser = await userRepository.findOne({ email });
-
+  const userService = new UserService;
+  const hasUser = await userService.findOneByEmail(email);
 
   if (!hasUser) {
     throw new AppError('User not found!', 422);
   }
+  console.log(hasUser)
 
   const isPasswordCorrect = await bcrypt.compare(password, hasUser.password);
 
@@ -22,7 +19,7 @@ const AuthSignIn = async (req: Request, res: Response, next: NextFunction) => {
     throw new AppError('Wrong password!', 401);
   }
 
-  req.body.hasUser = hasUser;
+  req.body.user = hasUser;
 
   return next();
 }

@@ -1,7 +1,7 @@
-import { getCustomRepository } from "typeorm";
+import { getCustomRepository, Repository } from "typeorm";
 import { UserRepository } from "../repositories/UserRepository";
-
-import bcrypt from 'bcryptjs';
+import { User } from "../models/User";
+import { TokenGenerate } from "../utils/JWT";
 
 interface IUser {
   email: string;
@@ -10,23 +10,30 @@ interface IUser {
 }
 
 class UserService {
-  async create(user: IUser) {
-    const userRepository = getCustomRepository(UserRepository);
-    const hash = await bcrypt.hash(user.password, 8)
+  private repository: Repository<User>
 
-    const newUser = userRepository.create({
-      email: user.email,
-      userName: user.userName,
-      password: hash,
-    });
-
-    const savedUser = await userRepository.save(newUser);
-
-    return savedUser;
+  constructor() {
+    this.repository = getCustomRepository(UserRepository)
   }
-  async findOneOrFail(id: string) {
-    const userRepository = getCustomRepository(UserRepository);
-    const user = await userRepository.findOneOrFail({ id });
+
+  async create(userData: IUser) {
+
+    const newUser = this.repository.create(userData);
+    const user = await this.repository.save(newUser);
+
+    return user;
+  }
+
+  async findOneByEmail(email: string) {
+
+    const user = await this.repository.findOne({ email });
+
+    return user;
+  }
+
+  async findOneByIdOrFail(id: string) {
+
+    const user = await this.repository.findOneOrFail({ id });
     const userData = {
       email: user.email,
       userName: user.userName,

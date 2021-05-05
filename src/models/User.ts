@@ -1,5 +1,6 @@
-import { Column, CreateDateColumn, Entity, JoinColumn, OneToMany, PrimaryColumn } from "typeorm";
+import { BeforeInsert, Column, CreateDateColumn, Entity, JoinColumn, OneToMany, PrimaryColumn } from "typeorm";
 import { v4 as uuid } from 'uuid';
+import bcrypt from 'bcryptjs';
 import { ChangesHistory } from "./ChangesHistory";
 import { Pages } from "./Pages";
 import { Word } from "./Word";
@@ -50,6 +51,11 @@ class User {
 
   // @Column({ name: 'answer_2' })
   // answer2: string;
+
+  @BeforeInsert()
+  async createHash() {
+    this.password = await bcrypt.hash(this.password, 8);
+  }
 
   constructor() {
     if (!this.id) {

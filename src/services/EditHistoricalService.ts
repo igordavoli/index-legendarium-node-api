@@ -1,5 +1,5 @@
 import { getCustomRepository } from 'typeorm';
-import { ChangesHistoryRepository } from '../repositories/ChagesHistoryRepository';
+import { ChangesHistoryRepository } from '../repositories/ChangesHistoryRepository';
 
 // interface Historical {
 //   userId: string;

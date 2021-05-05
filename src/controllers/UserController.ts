@@ -9,16 +9,15 @@ class UserController {
     const { validUser } = req.body;
     const userService = new UserService;
     const user = await userService.create(validUser);
-    const token = TokenGenerate(user.id)
+    const token = TokenGenerate(user.id);
 
-    res.status(201).json({ token, user });
+    res.status(201).json({ user, token });
   }
 
   async signIn(req: Request, res: Response) {
 
-    const { hasUser } = req.body;
-    const token = TokenGenerate(hasUser.id)
-    const user = hasUser;
+    const { user } = req.body;
+    const token = TokenGenerate(user.id)
 
     res.status(200).json({ token, user });
   }
@@ -27,11 +26,10 @@ class UserController {
 
     const { id } = req.body.decoded;
     const userService = new UserService;
-    const userData = await userService.findOneOrFail(id);
+    const userData = await userService.findOneByIdOrFail(id);
 
-    res.status(200).json({ userData })
+    res.status(200).json({ userData });
   }
-
 };
 
 export { UserController };
