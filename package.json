@@ -6,7 +6,7 @@
   "author": "igordavoli <70411386+igordavoli@users.noreply.github.com>",
   "license": "MIT",
   "scripts": {
-    "dev": "DB_NAME=index_legendarium_db ts-node-dev --transpile-only --ignore-watch node_modules src/server.ts",
+    "dev": "ts-node-dev --transpile-only --ignore-watch node_modules src/server.ts",
     "typeorm": "ts-node-dev ./node_modules/typeorm/cli.js --config ./ormconfig.ts",
     "test": "DB_NAME=test_db jest -i --forceExit"
   },

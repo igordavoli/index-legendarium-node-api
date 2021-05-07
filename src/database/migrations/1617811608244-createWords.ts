@@ -20,6 +20,7 @@ export class createWords1617811608244 implements MigrationInterface {
           {
             name: 'is_deleted',
             type: 'boolean',
+            default: false,
           },
           {
             name: 'vocable',

@@ -21,6 +21,10 @@ class Word {
   @CreateDateColumn({ name: 'created_at' })
   readonly createdAt: Date;
 
+  @Column({ name: 'is_deleted' })
+  isDeleted: boolean;
+
+
   @Column()
   vocable: string;
 

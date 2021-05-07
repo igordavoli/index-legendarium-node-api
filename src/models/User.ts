@@ -1,9 +1,9 @@
 import { BeforeInsert, Column, CreateDateColumn, Entity, JoinColumn, OneToMany, PrimaryColumn } from "typeorm";
 import { v4 as uuid } from 'uuid';
 import bcrypt from 'bcryptjs';
-import { ChangesHistory } from "./ChangesHistory";
-import { Pages } from "./Pages";
-import { Word } from "./Word";
+//import { ChangesHistory } from "./ChangesHistory";
+//import { Pages } from "./Pages";
+//import { Word } from "./Word";
 
 @Entity('users')
 class User {
@@ -14,16 +14,14 @@ class User {
   @CreateDateColumn({ name: 'created_at' })
   readonly createdAt: Date;
 
-  @OneToMany(type => Word, user => User)
-  wordsCreated: Word[];
+  // @OneToMany(type => Word, user => User)
+  // wordsCreated: Word[];
 
-  @OneToMany(type => Pages, user => User)
-  pagesAdded: Pages[]
+  // @OneToMany(type => Pages, user => User)
+  // pagesAdded: Pages[]
 
-  @OneToMany(type => ChangesHistory, user => User)
-  changesHistory: ChangesHistory[]
-  // @Column({ name: 'deleted_at' })
-  // deletedAt: boolean
+  // @OneToMany(type => ChangesHistory, user => User)
+  // changesHistory: ChangesHistory[]
 
   @Column()
   email: string;
@@ -59,7 +57,7 @@ class User {
 
   constructor() {
     if (!this.id) {
-      this.id = uuid()
+      this.id = uuid();
     }
   }
 }
