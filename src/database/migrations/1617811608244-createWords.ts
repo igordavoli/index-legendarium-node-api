@@ -17,26 +17,10 @@ export class createWords1617811608244 implements MigrationInterface {
             type: 'timestamp',
             default: "now()"
           },
-          // {
-          //   name: 'updated_at',
-          //   type: 'timestamp',
-          //   default: 'now()',
-          //   isNullable: true
-          // },
           {
-            name: "created_by",
-            type: 'uuid',
+            name: 'is_deleted',
+            type: 'boolean',
           },
-          // {
-          //   name: 'updated_by',
-          //   type: 'uuid',
-          //   default: 'now()',
-          //   isNullable: true
-          // },
-          // {
-          //   name: 'is_deleted',
-          //   type: 'boolean',
-          // },
           {
             name: 'vocable',
             type: 'varchar'
@@ -67,17 +51,8 @@ export class createWords1617811608244 implements MigrationInterface {
             isNullable: true
           },
         ],
-        foreignKeys: [
-          {
-            name: 'FKCreate',
-            referencedTableName: 'users',
-            referencedColumnNames: ['id'],
-            columnNames: ['created_by'],
-            onDelete: 'SET NULL',
-            onUpdate: 'CASCADE'
-          }
-        ]
-      }));
+      })
+    );
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {

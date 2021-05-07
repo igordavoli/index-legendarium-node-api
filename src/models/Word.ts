@@ -1,7 +1,7 @@
 import { Entity, Column, CreateDateColumn, JoinColumn, ManyToOne, PrimaryColumn, ManyToMany, JoinTable, OneToMany } from 'typeorm';
 import { v4 as uuid } from 'uuid';
-import { ChangesHistory } from './ChangesHistory';
-import { Pages } from './Pages';
+//import { ChangesHistory } from './ChangesHistory';
+//import { Pages } from './Pages';
 import { User } from './User';
 
 
@@ -11,8 +11,8 @@ class Word {
   @PrimaryColumn()
   readonly id: string;
 
-  @OneToMany(type => ChangesHistory, word => Word)
-  changesHistory: ChangesHistory[];
+  // @OneToMany(type => ChangesHistory, word => Word)
+  // changesHistory: ChangesHistory[];
 
   @ManyToOne(type => User, words => Word)
   @JoinColumn({ name: 'created_by' })
@@ -33,9 +33,9 @@ class Word {
   @Column()
   meaning: string;
 
-  @ManyToMany(() => Pages, pages => pages.words)
-  @JoinTable()
-  pages: Pages[];
+  // @ManyToMany(() => Pages, pages => pages.words)
+  // @JoinTable()
+  // pages: Pages[];
 
   @Column()
   about: string;

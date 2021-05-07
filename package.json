@@ -6,10 +6,9 @@
   "author": "igordavoli <70411386+igordavoli@users.noreply.github.com>",
   "license": "MIT",
   "scripts": {
-    "dev": "ts-node-dev --transpile-only --ignore-watch node_modules src/server.ts",
-    "typeorm": "ts-node-dev ./node_modules/typeorm/cli.js",
-    "test": "NODE_ENV=test jest -i",
-    "posttest": "rm ./src/database/database.test.sqlite"
+    "dev": "DB_NAME=index_legendarium_db ts-node-dev --transpile-only --ignore-watch node_modules src/server.ts",
+    "typeorm": "ts-node-dev ./node_modules/typeorm/cli.js --config ./ormconfig.ts",
+    "test": "DB_NAME=test_db jest -i --forceExit"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
@@ -17,7 +16,7 @@
     "express": "^4.17.1",
     "express-async-errors": "^3.1.1",
     "jsonwebtoken": "^8.5.1",
-    "sqlite3": "^5.0.2",
+    "pg": "^8.6.0",
     "typeorm": "^0.2.31",
     "uuid": "^8.3.2"
   },

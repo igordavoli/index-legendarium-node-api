@@ -4,7 +4,7 @@ import { WordRepository } from '../repositories/WordRepository';
 import { UserRepository } from '../repositories/UserRepository';
 import { AppError } from '../errors/AppError';
 import { Pages } from '../models/Pages';
-import { PagesRepository } from '../repositories/PagesRepository';
+//import { PagesRepository } from '../repositories/PagesRepository';
 
 export class WordsController {
 
@@ -31,7 +31,7 @@ export class WordsController {
     try {
       const userRepository = getCustomRepository(UserRepository);
       const wordRepository = getCustomRepository(WordRepository);
-      const pagesRepository = getCustomRepository(PagesRepository);
+      //const pagesRepository = getCustomRepository(PagesRepository);
 
       const userId = req.body.decoded.id;
       const { word } = req.body;
@@ -51,13 +51,13 @@ export class WordsController {
       const _pages = word.pages.split(',').map((page: string) => Number(page));
 
       const PagesArr = _pages.map((page: number) => {
-        return pagesRepository.create({ page, createdBy: userId });
+        //   return pagesRepository.create({ page, createdBy: userId });
       })
 
-      await pagesRepository.save(PagesArr);
+      //  await pagesRepository.save(PagesArr);
 
       const newWord = wordRepository.create({
-        pages: PagesArr,
+        //  pages: PagesArr,
         createdBy: userId,
         vocable: word.vocable,
         language: word.language,
@@ -97,9 +97,6 @@ export class WordsController {
       const { word } = req.body;
       const userId = req.body.decoded.id;
 
-      console.log(word)
-      console.log(userId)
-
       const wordRepository = getCustomRepository(WordRepository);
       const userRepository = getCustomRepository(UserRepository);
       const hasWord = await wordRepository.findOneOrFail({ id: word.id });
@@ -131,7 +128,6 @@ export class WordsController {
       res.status(201).json({ updatedWord });
 
     } catch (error) {
-      console.log(error)
       throw new AppError(error);
     }
   }

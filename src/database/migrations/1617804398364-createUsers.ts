@@ -18,16 +18,16 @@ export class createUsers1617804398364 implements MigrationInterface {
             type: 'timestamp',
             default: 'now()'
           },
-          // {
-          //   name: 'updated_at',
-          //   type: 'timestamp',
-          //   default: 'now()',
-          //   isNullable: true
-          // },
-          // {
-          //   name: 'is_deleted',
-          //   type: 'boolean',
-          // },
+          {
+            name: 'updated_at',
+            type: 'timestamp',
+            default: 'now()',
+          },
+          {
+            name: 'is_deleted',
+            type: 'boolean',
+            default: false
+          },
           {
             name: 'email',
             type: 'varchar',
@@ -36,14 +36,23 @@ export class createUsers1617804398364 implements MigrationInterface {
           {
             name: 'user_name',
             type: 'varchar',
-            isPrimary: true,
             isUnique: true
           },
           {
             name: 'password',
-            type: 'string'
+            type: 'varchar'
           },
-          // {
+        ]
+      })
+    );
+  }
+
+  public async down(queryRunner: QueryRunner): Promise<void> {
+    await queryRunner.dropTable('users');
+  }
+}
+
+ // {
           //   name: 'question_0',
           //   type: 'number'
           // },
@@ -67,14 +76,3 @@ export class createUsers1617804398364 implements MigrationInterface {
           //   name: 'answer_2',
           //   type: 'varchar'
           // },
-
-        ]
-      })
-    );
-  }
-
-  public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable('users');
-  }
-
-}

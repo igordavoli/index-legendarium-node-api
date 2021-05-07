@@ -7,12 +7,14 @@ describe('User', () => {
   beforeAll(async () => {
     const connection = await createConnection();
     await connection.runMigrations();
+
   });
 
   afterAll(async () => {
     const connection = getConnection();
     await connection.dropDatabase();
     await connection.close();
+
   })
 
   it('Should be able to create a new user',
@@ -44,7 +46,8 @@ describe('User', () => {
         });
 
       expect(res.status).toBe(409);
-      expect(res.body).toMatchObject({ message: 'Email already registered!' })
+      expect(res.body).toMatchObject({ message: 'Email already registered!' });
+
     })
 
   it('Should be able to create a another user with different email and user name.',
@@ -76,7 +79,8 @@ describe('User', () => {
         });
 
       expect(res.status).toBe(409);
-      expect(res.body).toMatchObject({ message: 'User name already exists!' })
+      expect(res.body).toMatchObject({ message: 'User name already exists!' });
+
     })
 
   /*
@@ -92,6 +96,7 @@ describe('User', () => {
         });
 
       expect(res.status).toBe(200);
+
     }
   )
 
@@ -104,7 +109,8 @@ describe('User', () => {
         });
 
       expect(res.status).toBe(422);
-      expect(res.body).toMatchObject({ message: 'User not found!' })
+      expect(res.body).toMatchObject({ message: 'User not found!' });
+
     }
   )
 
@@ -117,7 +123,8 @@ describe('User', () => {
         });
 
       expect(res.status).toBe(401);
-      expect(res.body).toMatchObject({ message: 'Wrong password!' })
+      expect(res.body).toMatchObject({ message: 'Wrong password!' });
+
     }
   )
 });
