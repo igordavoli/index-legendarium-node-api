@@ -3,8 +3,8 @@ import { getCustomRepository } from 'typeorm';
 import { WordRepository } from '../repositories/WordRepository';
 import { UserRepository } from '../repositories/UserRepository';
 import { AppError } from '../errors/AppError';
-//import { Pages } from '../models/Pages';
 import { WordService } from '../services';
+//import { Pages } from '../models/Pages';
 //import { PagesRepository } from '../repositories/PagesRepository';
 
 export class WordsController {
@@ -65,37 +65,10 @@ export class WordsController {
     try {
       const { word } = req.body;
       const userId = req.body.decoded.id;
-
-      const wordRepository = getCustomRepository(WordRepository);
-      const userRepository = getCustomRepository(UserRepository);
-      const hasWord = await wordRepository.findOneOrFail({ id: word.id });
-      const user = await userRepository.findOneOrFail({ id: userId });
-
-
-      // await saveHistorical(
-      //   user.id,
-      //   hasWord.id,
-      //   hasWord.vocable,
-      //   hasWord.language,
-      //   hasWord.type,
-      //   hasWord.meaning,
-      //   hasWord.about,
-      //   hasWord.seeToo
-      // );
-
-      const updatedWord = await wordRepository.update({ id: word.id }, {
-        vocable: word.vocable,
-        language: word.language,
-        type: word.type,
-        meaning: word.meaning,
-        about: word.about,
-        seeToo: word.seeToo,
-      });
-
-
+      const wordService = new WordService;
+      const updatedWord = wordService.updatedWord(word, userId);
 
       res.status(201).json({ updatedWord });
-
     } catch (error) {
       throw new AppError(error);
     }

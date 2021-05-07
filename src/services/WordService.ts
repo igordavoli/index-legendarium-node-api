@@ -1,11 +1,21 @@
 import { getCustomRepository, Like, Repository } from "typeorm";
 import { AppError } from "../errors/AppError";
-import { User } from "../models/User";
-import { Word } from "../models/Word";
+import { User, Word } from "../models";
 import { UserRepository, WordRepository } from "../repositories";
 import { UserService } from "./UserService";
 
 interface INewWord {
+  vocable: string;
+  language: string;
+  type: string;
+  meaning: string;
+  pages: string;
+  about: string;
+  seeToo: string;
+}
+
+interface IWord {
+  id: string;
   vocable: string;
   language: string;
   type: string;
@@ -30,7 +40,6 @@ class WordService {
 
     return words;
   }
-
 
   async create(word: INewWord, userId: string) {
 
@@ -77,6 +86,35 @@ class WordService {
     const word = await this.repository.findOneOrFail(id);
 
     return word;
+  }
+
+  async updatedWord(word: IWord, userId: string) {
+    const wordRepository = getCustomRepository(WordRepository);
+    const userRepository = getCustomRepository(UserRepository);
+    const hasWord = await wordRepository.findOneOrFail({ id: word.id });
+    const user = await userRepository.findOneOrFail({ id: userId });
+
+    // await saveHistorical(
+    //   user.id,
+    //   hasWord.id,
+    //   hasWord.vocable,
+    //   hasWord.language,
+    //   hasWord.type,
+    //   hasWord.meaning,
+    //   hasWord.about,
+    //   hasWord.seeToo
+    // );
+
+    const updatedWord = await wordRepository.update({ id: word.id }, {
+      vocable: word.vocable,
+      language: word.language,
+      type: word.type,
+      meaning: word.meaning,
+      about: word.about,
+      seeToo: word.seeToo,
+    });
+
+    return updatedWord;
   }
 }
 
