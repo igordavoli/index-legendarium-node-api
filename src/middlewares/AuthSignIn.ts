@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { UserService } from '../services/userService';
+import { UserService } from '../services/UserService';
 import { AppError } from '../errors/AppError';
 import bcrypt from 'bcryptjs';
 

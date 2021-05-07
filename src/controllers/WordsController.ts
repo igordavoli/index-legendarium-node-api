@@ -3,7 +3,8 @@ import { getCustomRepository, Like } from 'typeorm';
 import { WordRepository } from '../repositories/WordRepository';
 import { UserRepository } from '../repositories/UserRepository';
 import { AppError } from '../errors/AppError';
-import { Pages } from '../models/Pages';
+//import { Pages } from '../models/Pages';
+import { WordService } from '../services';
 //import { PagesRepository } from '../repositories/PagesRepository';
 
 export class WordsController {
@@ -28,48 +29,12 @@ export class WordsController {
   }
 
   async create(req: Request, res: Response) {
-    try {
-      const userRepository = getCustomRepository(UserRepository);
-      const wordRepository = getCustomRepository(WordRepository);
-      //const pagesRepository = getCustomRepository(PagesRepository);
 
+    try {
+      const wordService = new WordService;
       const userId = req.body.decoded.id;
       const { word } = req.body;
-
-      if (!word.vocable) {
-        throw new AppError('Vocable is a required field!', 400);
-      }
-
-      await userRepository.findOneOrFail({ id: userId });
-
-      const hasWord = await wordRepository.findOne({ vocable: Like(word.vocable) });
-
-      if (hasWord) {
-        throw new AppError('Word already exists!', 409);
-      }
-
-      const _pages = word.pages.split(',').map((page: string) => Number(page));
-
-      const PagesArr = _pages.map((page: number) => {
-        //   return pagesRepository.create({ page, createdBy: userId });
-      })
-
-      //  await pagesRepository.save(PagesArr);
-
-      const newWord = wordRepository.create({
-        //  pages: PagesArr,
-        createdBy: userId,
-        vocable: word.vocable,
-        language: word.language,
-        type: word.type,
-        meaning: word.meaning,
-        about: word.about,
-        seeToo: word.seeToo
-      });
-
-      await wordRepository.save(newWord);
-
-      const savedWord = await wordRepository.findOneOrFail({ vocable: word.vocable })
+      const savedWord = await wordService.create(word, userId);
 
       res.status(201).json({ savedWord });
 
