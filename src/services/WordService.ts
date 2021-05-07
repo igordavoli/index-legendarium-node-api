@@ -2,8 +2,7 @@ import { getCustomRepository, Like, Repository } from "typeorm";
 import { AppError } from "../errors/AppError";
 import { User } from "../models/User";
 import { Word } from "../models/Word";
-import { UserRepository } from "../repositories/UserRepository";
-import { WordRepository } from "../repositories/WordRepository";
+import { UserRepository, WordRepository } from "../repositories";
 import { UserService } from "./UserService";
 
 interface INewWord {
@@ -79,7 +78,6 @@ class WordService {
 
     return word;
   }
-
 }
 
 export { WordService };

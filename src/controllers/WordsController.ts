@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { getCustomRepository, Like } from 'typeorm';
+import { getCustomRepository } from 'typeorm';
 import { WordRepository } from '../repositories/WordRepository';
 import { UserRepository } from '../repositories/UserRepository';
 import { AppError } from '../errors/AppError';
@@ -52,7 +52,6 @@ export class WordsController {
     try {
       const { id } = req.params;
       const wordService = new WordService;
-
       const word = await wordService.findById(id);
 
       res.status(200).json(word);
@@ -84,7 +83,7 @@ export class WordsController {
       //   hasWord.seeToo
       // );
 
-      await wordRepository.update({ id: word.id }, {
+      const updatedWord = await wordRepository.update({ id: word.id }, {
         vocable: word.vocable,
         language: word.language,
         type: word.type,
@@ -93,7 +92,7 @@ export class WordsController {
         seeToo: word.seeToo,
       });
 
-      const updatedWord = await wordRepository.findOneOrFail({ id: word.id });
+
 
       res.status(201).json({ updatedWord });
 

@@ -1,7 +1,6 @@
 import { getCustomRepository, Repository } from "typeorm";
 import { UserRepository } from "../repositories/UserRepository";
 import { User } from "../models/User";
-import { TokenGenerate } from "../utils/JWT";
 
 interface IUser {
   email: string;
@@ -10,10 +9,10 @@ interface IUser {
 }
 
 class UserService {
-  private repository: Repository<User>
+  private repository: Repository<User>;
 
   constructor() {
-    this.repository = getCustomRepository(UserRepository)
+    this.repository = getCustomRepository(UserRepository);
   }
 
   async create(userData: IUser) {
