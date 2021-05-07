@@ -10,22 +10,27 @@ import { WordService } from '../services';
 export class WordsController {
 
   async query(req: Request, res: Response) {
+    try {
+      const wordService = new WordService;
+      const { search } = req.query;
 
-    const wordRepository = getCustomRepository(WordRepository);
-    const { search } = req.query;
+      if (!search) {
+        throw new AppError('Empty search nothing was returned.', 204);
+      }
 
-    if (!search) {
-      throw new AppError('Empty search nothing was returned.', 400);
+      const words = await wordService.search(
+        String(search).trim()
+      );
+
+      if (words.length === 0) {
+        throw new AppError('Word not found!', 204);
+      }
+
+      res.status(200).json(words);
+
+    } catch (error) {
+      throw new AppError(error);
     }
-
-    const _search = String(search).trim();
-    const words = await wordRepository.find({ vocable: Like(String(_search)) });
-
-    if (words.length === 0) {
-      throw new AppError('Word not found!', 404);
-    }
-
-    res.status(200).json(words);
   }
 
   async create(req: Request, res: Response) {

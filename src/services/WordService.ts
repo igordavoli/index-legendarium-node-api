@@ -25,6 +25,14 @@ class WordService {
     this.userRepository = getCustomRepository(UserRepository);
   }
 
+  async search(search: string) {
+
+    const words = await this.repository.find({ vocable: Like(String(search)) });
+
+    return words;
+  }
+
+
   async create(word: INewWord, userId: string) {
 
     //const pagesRepository = getCustomRepository(PagesRepository);
