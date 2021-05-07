@@ -73,6 +73,13 @@ class WordService {
 
     return savedWord;
   }
+
+  async findById(id: string) {
+    const word = await this.repository.findOneOrFail(id);
+
+    return word;
+  }
+
 }
 
 export { WordService };

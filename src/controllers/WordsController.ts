@@ -51,9 +51,9 @@ export class WordsController {
   async find(req: Request, res: Response) {
     try {
       const { id } = req.params;
+      const wordService = new WordService;
 
-      const wordRepository = getCustomRepository(WordRepository);
-      const word = await wordRepository.findOneOrFail(id);
+      const word = await wordService.findById(id);
 
       res.status(200).json(word);
 
